@@ -12,13 +12,44 @@ family = 'wikipedia'
 plwiki = getSite(mylang, family)
 
 # sciaganie danych zrodlowych
-areaSource = urlopen("http://www.stat.si/letopis/2010/31_10/31-01-10.htm").read().encode('utf-8')
-populationSource = urlopen("http://www.stat.si/letopis/2010/31_10/31-02-10.htm").read()
+areaSource = unicode(urlopen("http://www.stat.si/letopis/2010/31_10/31-01-10.htm").read(), 'windows-1250', errors =  'ignore')
+populationSource = unicode(urlopen("http://www.stat.si/letopis/2010/31_10/31-02-10.htm").read(), 'windows-1250', errors = 'ignore')
+source = areaSource
 
 # ustalanie nazw gmin
-municipalitiesList = []
-#while areaSource.find(u'<td height=17 class=xl24') != -1:
-#	areaSource = areaSource[areaSource.find(u'<td height=17 class=xl24'):]
-#	areaSource = areaSource[areaSource.find(u'>'):]
-#	print areaSource[:areaSource.find(u'<')]
+sourceMunicipalitiesList = {}
+while source.find(u'<td height=17 class=xl24') != -1:
+	source = source[source.find(u'<td height=17 class=xl24'):]
+	source = source[source.find(u'>') + 1:]
+	sourceMunicipality = source[:source.find(u'<')]	
+	municipality = sourceMunicipality.replace('\n', '')
+	municipality = municipality.replace('\r', '')
+	while municipality.find('  ') != -1:
+		municipality = municipality.replace('  ', ' ')
+	if municipality.find('/') != -1:
+		municipality = municipality[:municipality.find('/')]
+	sourceMunicipalitiesList[municipality] = sourceMunicipality
 
+# ustalanie powierzchni gmin
+areasList = {}
+for municipality in sourceMunicipalitiesList:
+	source = areaSource
+	source = source[source.find(sourceMunicipalitiesList[municipality]):]
+	source = source[source.find('xl55'):]
+	source = source[source.find('>') + 1:source.find('<')]
+	areasList[municipality] = source
+
+# ustalenie populacji gmin
+populationsList = {}
+for municipality in sourceMunicipalitiesList:
+	pointer = municipality
+	while populationSource.find(pointer) == -1:
+		pointer = pointer[:-1]
+	source = populationSource[populationSource.find(pointer):]
+	source = source[source.find('xl68'):]
+	source = source[source.find('>') + 1:source.find('<')]
+	if len(source) > 4:
+		source = source[:-3] + ' ' + source[-3:]
+	populationsList[municipality] = source
+
+# ustalanie stron wiki na podstawie szablonu
