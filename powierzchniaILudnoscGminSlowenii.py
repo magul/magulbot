@@ -53,3 +53,16 @@ for municipality in sourceMunicipalitiesList:
 	populationsList[municipality] = source
 
 # ustalanie stron wiki na podstawie szablonu
+wikiPagesList = {}
+page = Page(plwiki, u'Szablon:Słowenia')
+pagetext = page.get()
+for municipality in sourceMunicipalitiesList:
+	pointer = municipality
+	while pagetext.find(pointer) == -1:
+		pointer = pointer[:-1]
+	pointer = pagetext.find(pointer)
+	wikiPage = pagetext[pagetext.rfind(u'[', 0, pointer) + 1:pagetext.find(u']', pointer)]
+	if wikiPage.find(u'|') != -1:
+		wikiPage = wikiPage[:wikiPage.find(u'|')]
+	wikiPagesList[municipality] = wikiPage
+
