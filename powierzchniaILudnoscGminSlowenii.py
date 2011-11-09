@@ -66,3 +66,10 @@ for municipality in sourceMunicipalitiesList:
 		wikiPage = wikiPage[:wikiPage.find(u'|')]
 	wikiPagesList[municipality] = wikiPage
 
+# pozbywanie sie przekierowan stron
+for municipality in wikiPagesList:
+	page = Page(plwiki, wikiPagesList[municipality])
+	while page.isRedirectPage():
+		page = Page(plwiki, page.getRedirectTarget().title())
+		wikiPagesList[municipality] = page.title()
+
