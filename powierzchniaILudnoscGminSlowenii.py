@@ -46,11 +46,15 @@ for municipality in sourceMunicipalitiesList:
 	while populationSource.find(pointer) == -1:
 		pointer = pointer[:-1]
 	source = populationSource[populationSource.find(pointer):]
+	for i in range(3):
+		source = source[source.find('xl68') + 1:]
+
 	source = source[source.find('xl68'):]
 	source = source[source.find('>') + 1:source.find('<')]
 	if len(source) > 4:
 		source = source[:-3] + ' ' + source[-3:]
 	populationsList[municipality] = source
+
 
 # ustalanie stron wiki na podstawie szablonu
 wikiPagesList = {}
@@ -73,3 +77,37 @@ for municipality in wikiPagesList:
 		page = Page(plwiki, page.getRedirectTarget().title())
 		wikiPagesList[municipality] = page.title()
 
+# petla edycji
+for municipality in wikiPagesList:
+	page = Page(plwiki, wikiPagesList[municipality])
+	pagetext = page.get()
+
+# ustalenie miejsca infoboksa
+	beginning = pagetext[:pagetext.find(u'{{Jednostka administracyjna infobox')]
+	middle = pagetext[pagetext.find(u'{{Jednostka administracyjna infobox'):]
+	ending = middle[middle.find(u'}}') + 2:]
+	middle = middle[:middle.find(u'}}') + 2]
+
+# rok
+	pointer = middle.find('|rok')
+	middle = (middle[:pointer - 1] + u'| rok                              = 2010' + '\n ' + middle[middle.find(u'|', pointer + 1):])
+	
+# powierzchnia
+	pointer = middle.find(u'powierzchnia')
+	middle = (middle[:middle.rfind(u'|', 0, pointer)] + u'|powierzchnia                      = ' + areasList[municipality] + 
+		u'<ref>{{cytuj pismo | czasopismo = Statistični letopis Republike Slovenije | odpowiedzialność = Vojka Vuk Dirnbek - redaktor | oznaczenie = XLIX (2010) | miejsce = Lublana | wydawca = Statistični urad Republike Slovenije | rok = 2010 | strony = 518-521 | issn = 1318-5403 | język = sl}}</ref>' + 
+		'\n ' + middle[middle.find(u'|',pointer):])
+	
+# populacja
+	pointer = middle.find(u'populacja')
+	middle = (middle[:middle.rfind(u'|', 0, pointer)] + u'|populacja                         = ' + populationsList[municipality] + 
+		u'<ref>{{cytuj pismo | czasopismo = Statistični letopis Republike Slovenije | odpowiedzialność = Vojka Vuk Dirnbek - redaktor | oznaczenie = XLIX (2010) | miejsce = Lublana | wydawca = Statistični urad Republike Slovenije | rok = 2010 | strony = 522-524 | issn = 1318-5403 | język = sl}}</ref>' + 
+		'\n ' + middle[middle.find(u'|',pointer):])
+
+# gestosc
+	pointer = middle.find(u'gęstość')
+	density = float(populationsList[municipality].replace(' ',''))/float(areasList[municipality].replace(',','.'))
+	density = str(round(density,2)).replace('.',',')
+	middle = (middle[:middle.rfind(u'|', 0, pointer)] + u'|gęstość                           = ' + density + '\n ' + middle[middle.find(u'|',pointer):])
+	
+	page.put(beginning + middle + ending, 'Uaktualnienie infoboksa na podstawie Slowenskiego Urzedu Statystycznego')
