@@ -5,6 +5,7 @@
 import sys, string
 from urllib2 import urlopen
 from wikipedia import *
+from transliteracja import BG
 
 # ustawienia podstawowe
 mylang = 'pl'
