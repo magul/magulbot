@@ -28,7 +28,10 @@ while source.find(u'<td class="left') != -1:
 	source = source[source.find(u'>') + 1:]
 	population = source[:source.find(u'<')]
 	population = population.replace(u'&nbsp;', '')
+	if name in populationMunicipalitiesList:
+		print name + u' ' + populationMunicipalitiesList[name]
 	populationMunicipalitiesList[name] = population
+
 
 # ustalenie szablonow wiki dla okregow
 districtsTemplatesList = []
@@ -50,8 +53,8 @@ for foo in districtsTemplatesList:
 		pagetext = pagetext[pagetext.find(u'Gmina ') + 1:]
 		pointer = pagetext.find(u'Gmina ')
 
-print len(municipalitiesPagesList)
-
+# odwzorowanie stron do nazw bulgarskich
+municipalitiesPagesDict = {}
 for foo in municipalitiesPagesList:
 	page = Page(plwiki, foo)
 	pagetext = page.get()
@@ -61,5 +64,25 @@ for foo in municipalitiesPagesList:
 	for bar in populationMunicipalitiesList:
 		if bar in pagetext:
 			i = i + 1
-	if i != 1:
-		print foo + ' ' + str(i)
+	if i == 1:
+		for bar in populationMunicipalitiesList:
+			if bar in pagetext:
+				municipalitiesPagesDict[bar] = foo
+	else:
+		print foo
+
+# edycja stron
+for foo in municipalitiesPagesDict:
+	page = Page(plwiki, municipalitiesPagesDict[foo])
+	pagetext = page.get()
+	beginning = pagetext[:pagetext.find(u'|populacja                         = ')]
+	pagetext = pagetext[pagetext.find(u'|populacja                         = '):]
+	ending = pagetext[pagetext.find(u'|gęstość'):]
+	middle = u'|populacja                         = ' + populationMunicipalitiesList[foo] + u'<ref>{{cytuj stronę | url = http://www.nsi.bg/otrasal.php?otr=19&a1=376&a2=377&a3=378 | tytuł = НАЦИОНАЛЕН СТАТИСТИЧЕСКИ ИНСТИТУТ - 6.1.1. Население по области, общини, местоживеене и пол – Данни | data dostępu = 2011-11-15 | data = 2011-04-27 | język = bg}}</ref>'
+	middle = middle + '\n' + u' |rok                               = 2010' + '\n '
+	pagetext = beginning + middle + ending
+	pagetext = pagetext[:pagetext.find(u'{{Obw')] + u'{{Przypisy}}' + '\n' + pagetext[pagetext.find(u'{{Obw'):]
+	if pagetext.find(u'{{Obw') == -1:
+		print foo
+	else:
+		page.put(pagetext, u'Uaktualnienie populacji na podstawie danych z Bulgarskiego Urzedu Statystycznego') 
