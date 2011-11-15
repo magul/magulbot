@@ -28,10 +28,14 @@ while source.find(u'<td class="left') != -1:
 	source = source[source.find(u'>') + 1:]
 	population = source[:source.find(u'<')]
 	population = population.replace(u'&nbsp;', '')
+	if len(population) > 4:
+		i = 0
+		while i * 4 + 3 < len(population):
+			population = population[:i * -4 - 3] + ' ' + population[i * -4 - 3:]
+			i = i + 1
 	if name in populationMunicipalitiesList:
 		print name + u' ' + populationMunicipalitiesList[name]
 	populationMunicipalitiesList[name] = population
-
 
 # ustalenie szablonow wiki dla okregow
 districtsTemplatesList = []
