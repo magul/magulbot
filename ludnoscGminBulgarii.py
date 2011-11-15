@@ -82,7 +82,7 @@ for foo in municipalitiesPagesDict:
 	beginning = pagetext[:pagetext.find(u'|populacja                         = ')]
 	pagetext = pagetext[pagetext.find(u'|populacja                         = '):]
 	ending = pagetext[pagetext.find(u'|gęstość'):]
-	middle = u'|populacja                         = ' + populationMunicipalitiesList[foo] + u'<ref>{{cytuj stronę | url = http://www.nsi.bg/otrasal.php?otr=19&a1=376&a2=377&a3=378 | tytuł = НАЦИОНАЛЕН СТАТИСТИЧЕСКИ ИНСТИТУТ - 6.1.1. Население по области, общини, местоживеене и пол – Данни | data dostępu = 2011-11-15 | data = 2011-04-27 | język = bg}}</ref>'
+	middle = u'|populacja                         = ' + populationMunicipalitiesList[foo] + u'<ref>{{cytuj stronę | url = http://www.nsi.bg/otrasal.php?otr=19&a1=376&a2=377&a3=378 | tytuł = 6.1.1. Население по области, общини, местоживеене и пол – Данни | autor = Национален статистически институт | data dostępu = 2011-11-15 | data = 2011-04-27 | język = bg}}</ref>'
 	middle = middle + '\n' + u' |rok                               = 2010' + '\n '
 	pagetext = beginning + middle + ending
 	pagetext = pagetext[:pagetext.find(u'{{Obw')] + u'{{Przypisy}}' + '\n' + pagetext[pagetext.find(u'{{Obw'):]
