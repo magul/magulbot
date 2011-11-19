@@ -19,7 +19,11 @@ enfamily = 'wikipedia'
 enwiki = getSite(enlang, enfamily)
 
 # sciaganie map w kategorii
-category = Category(commonswiki, u'Locator_maps_of_municipalities_of_Central_North_Bulgaria')
+# zrobione dla:
+# Kategoria:Locator_maps_of_municipalities_of_Central_North_Bulgaria
+# Kategoria:Locator maps of municipalities of Northeast Bulgaria
+# Kategoria:Locator maps of municipalities of Northwest Bulgaria
+category = Category(commonswiki, u'Locator maps of municipalities of Northwest Bulgaria')
 imageInCategory = category.articlesList()
 
 # dla wszyskich obrazow w kategorii...
