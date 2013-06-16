@@ -69,3 +69,24 @@ for idx, province in enumerate(provinces):
 
 con.close()
 print u"DISAMBIG SUCCESSES: " + str(successcount)
+
+# populate sqlite if there's prefix in name
+successcount = 0
+con = lite.connect('municipio.sqlite', isolation_level=None)
+cur = con.cursor()
+for idx, province in enumerate(provinces):
+	with open('mun_exp.csv', 'rb') as csvfile:
+		csvreader = csv.reader(csvfile)
+		for row in csvreader:
+			if row[3].decode("utf-8") == csv_provinces[idx]:
+				csv_name = row[6].decode("utf-8")
+				if csv_name.find(',') != -1:
+					csv_name = csv_name[csv_name.find(',')+2:]+ u' '+ csv_name[:csv_name.find(',')]
+					csv_name = csv_name[0].upper()+csv_name[1:]
+					cur.execute(u'SELECT COUNT(*) from municipio where pl_province="'+province+u'" and current_plpage="'+csv_name+u'" and csv_name IS NULL')
+					if cur.fetchone()[0] == 1:
+						successcount += 1
+						cur.execute(u'UPDATE municipio set csv_name="'+row[6].decode("utf-8")+u'" where pl_province="'+province+u'" and current_plpage="'+csv_name+u'"  and csv_name IS NULL')
+
+con.close()
+print u"PREFIX SUCCESSES: " + str(successcount)
