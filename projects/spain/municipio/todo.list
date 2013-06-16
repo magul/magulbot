@@ -1,11 +1,11 @@
 DONE obtain polish wiki pages
 DONE check, why there is a difference between numbers of municipios
+DONE connect plwiki pages with municipios from csv
 
 
-* connect plwiki pages with municipios from csv
 * obtain most frequently used template
-* obtain spanish names (remember about prefixes)
 * obtain wikidata
+* obtain spanish names (remember about prefixes)
 * obtain names in other languages (remember about polish)
 * obtain populations
 * obtain area
