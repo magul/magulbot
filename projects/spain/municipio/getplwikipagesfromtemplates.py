@@ -1,6 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+#
+# obtain municipios of spain form plwiki and insert them in sqlite using municipios of province template
+#
+
+
 # system imports
 from wikipedia import *
 import sqlite3 as lite
