@@ -1,2 +1,3 @@
-BG.pyc
-__init__.pyc
+*.pyc
+*.sqlite
+*.sqlite-journal

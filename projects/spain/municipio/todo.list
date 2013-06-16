@@ -1,0 +1,12 @@
+* obtain polish wiki pages
+* obtain most frequently used template
+* obtain spanish names (remember about prefixes)
+* obtain wikidata
+* obtain names in other languages (remember about polish)
+* obtain populations
+* obtain area
+* calculate density
+* obtain longitude and lattitude (using OSM's nominatim)
+* obtain commons page/category
+* find most suitable map/photo
+...
