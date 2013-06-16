@@ -52,3 +52,20 @@ for idx, province in enumerate(provinces):
 
 con.close()
 print u"EXACT SUCCESSES: " + str(successcount)
+
+# populate sqlite if there's disambiguation
+successcount = 0
+con = lite.connect('municipio.sqlite', isolation_level=None)
+cur = con.cursor()
+for idx, province in enumerate(provinces):
+	with open('mun_exp.csv', 'rb') as csvfile:
+		csvreader = csv.reader(csvfile)
+		for row in csvreader:
+			if row[3].decode("utf-8") == csv_provinces[idx]:
+				cur.execute(u'SELECT COUNT(*) from municipio where pl_province="'+province+u'" and current_plpage like "'+row[6].decode("utf-8")+u' (%)" and csv_name IS NULL')
+				if cur.fetchone()[0] == 1:
+					successcount += 1
+					cur.execute(u'UPDATE municipio set csv_name="'+row[6].decode("utf-8")+u'" where pl_province="'+province+u'" and current_plpage like "'+row[6].decode("utf-8")+u' (%)"  and csv_name IS NULL')
+
+con.close()
+print u"DISAMBIG SUCCESSES: " + str(successcount)
