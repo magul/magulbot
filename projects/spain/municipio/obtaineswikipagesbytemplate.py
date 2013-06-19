@@ -20,7 +20,8 @@ family = 'wikipedia'
 eswiki = getSite(eslang, family)
 
 # get all references of template
-template = Page(eswiki, u'Template:Ficha de localidad de España')
+# before that was u'Template:Ficha de localidad de España'
+template = Page(eswiki, u'Template:Ficha de entidad subnacional')
 es_pages = map(Page.title, list(template.getReferences()))
 
 # open sqlite connection
@@ -32,7 +33,6 @@ cur.execute(u'SELECT spanish_name, other_name, nr_inscripcion FROM municipio WHE
 
 sql_result =  cur.fetchall()
 
-succ = 0
 sql_dict = {}
 
 for sql_rec in sql_result:
@@ -45,21 +45,22 @@ for sql_rec in sql_result:
 			else:
 				sql_dict[sql_rec[0]] = [page, ]
 		if (sql_rec[1] != None and page.find(sql_rec[1]) == 0):
-			if sql_rec[1] in sql_dict.keys():
+			if sql_rec[0] in sql_dict.keys():
 				value = [page, ]
-				value.extend(sql_dict[sql_rec[1]])
-				sql_dict[sql_rec[1]] = value
+				value.extend(sql_dict[sql_rec[0]])
+				sql_dict[sql_rec[0]] = value
 			else:
-				sql_dict[sql_rec[1]] = [page, ]
+				sql_dict[sql_rec[0]] = [page, ]
 
 
 for key in sql_dict:
 	if len(sql_dict[key]) > 1:
-		print key, " => ", sql_dict[key]
+		pass
 	else:
-		succ += 1
+		for sql_rec in sql_result:
+			if key == sql_rec[0]:
+				cur.execute(u'UPDATE municipio SET es_page = "' + sql_dict[key][0] + '" WHERE nr_inscripcion = "'+ sql_rec[2] + u'"')
+				print key, u' => ', sql_dict[key][0]
 
-
-print succ
 # close sqlite connection
 con.close()
