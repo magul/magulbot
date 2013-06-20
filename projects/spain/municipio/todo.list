@@ -5,8 +5,8 @@ DONE obtain most frequently used template
 DONE retreive names from website, because export to cvs makes some bugs
 DONE obtain spanish names (remember about prefixes)
 DONE obtain names in other languages (remember about polish)
+DONE obtain wikidata
 
-* obtain wikidata
 * obtain populations
 * obtain area
 * calculate density
