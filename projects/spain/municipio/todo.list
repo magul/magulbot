@@ -7,10 +7,12 @@ DONE obtain spanish names (remember about prefixes)
 DONE obtain names in other languages (remember about polish)
 DONE obtain wikidata
 
+* obtain longitude and lattitude (using OSM's nominatim) (finish script)
+
+
 * obtain populations
 * obtain area
 * calculate density
-* obtain longitude and lattitude (using OSM's nominatim)
 * obtain commons page/category
 * find coas and flags
 * find most suitable map/photo
