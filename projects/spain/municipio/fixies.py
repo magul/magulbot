@@ -21,3 +21,14 @@ csv_provinces = [u'Coruña, A', u'Araba/Álava', u'Albacete', u'Alacant/Alicante
                  u'Pontevedra', u'Salamanca', u'Santa Cruz de Tenerife', u'Zaragoza', u'Segovia',
                  u'Sevilla', u'Soria', u'Tarragona', u'Teruel', u'Toledo', u'Valladolid',
                  u'Bizkaia', u'València/Valencia', u'Zamora']
+
+
+osm_provinces = [u'A Coruña', u'Álava', u'Albacete', u'Alicante', u'Almería',
+                 u'Asturias', u'Ávila', u'Badajoz', u'Illes Balears', u'Barcelona', u'Burgos',
+                 u'Cáceres', u'Castellón', u'Ciudad Real', u'Cuenca', u'Girona',
+                 u'Granada', u'Guadalajara', u'Gipuzkoa', u'Huelva', u'Huesca', u'Jaén', u'Cádiz',
+                 u'Cantabria', u'Córdoba', u'La Rioja', u'León', u'Lleida', u'Lugo', u'Madrid',
+                 u'Málaga', u'Murcia', u'Navarra', u'Ourense', u'Palencia', u'Las Palmas',
+                 u'Pontevedra', u'Salamanca', u'Santa Cruz de Tenerife', u'Zaragoza', u'Segovia',
+                 u'Sevilla', u'Soria', u'Tarragona', u'Teruel', u'Toledo', u'Valladolid',
+                 u'Bizkaia', u'Valencia', u'Zamora']
