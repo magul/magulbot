@@ -75,8 +75,12 @@ for item in data:
 		nr += 1
 		pagedict = tem2dict(exttem(u'commons', item[2]))
 		if len(pagedict) > 0:
-			print item[1], ' ==> ', pagedict[0]
-			cur.execute(u'UPDATE municipio SET commons = "' + pagedict[0] + u'" where nr_inscripcion = "' + item[0] + u'"')
+			if 0 in pagedict:
+				print item[1], ' ==> ', pagedict[0]
+				cur.execute(u'UPDATE municipio SET commons = "' + pagedict[0] + u'" where nr_inscripcion = "' + item[0] + u'"')
+			else:
+				print item[1], ' ==> ', pagedict[u'nombre']
+				cur.execute(u'UPDATE municipio SET commons = "' + pagedict[u'nombre'] + u'" where nr_inscripcion = "' + item[0] + u'"')
 		else:
 			print item[1], ' ==> ', item[1]
 			cur.execute(u'UPDATE municipio SET commons = "' + item[1] + u'" where nr_inscripcion = "' + item[0] + u'"')			
