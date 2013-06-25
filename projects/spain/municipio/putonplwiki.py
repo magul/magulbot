@@ -95,7 +95,7 @@ data = cur.fetchall()
 con.close()
 
 # limit edit
-max_edits = 25
+max_edits = 100
 edit_ct = 0
 
 # for every row in data
@@ -147,7 +147,7 @@ for row in data:
 		pl_page_text += u' |numer kierunkowy             = \n'
 		pl_page_text += u' |kod pocztowy                 = \n'
 		pl_page_text += u' |tablice rejestracyjne        = \n'
-		pl_page_text += u' |kod mapy                     = ' + (auto_com[pl_province][:auto_com[pl_province].find(u'(')-1] + u'\n' if u'(' in auto_com[pl_province] else auto_com[province] + '\n')
+		pl_page_text += u' |kod mapy                     = ' + (auto_com[pl_province][:auto_com[pl_province].find(u'(')-1] + u'\n' if u'(' in auto_com[pl_province] else auto_com[pl_province] + '\n')
 		pl_page_text += u' |wariant mapy                 = \n'
 		pl_page_text += u' |stopniN = ' + str(int(lat)) + u' |minutN = ' + str(int(lat*60)%60) + u' |sekundN = ' + str(int(lat*3600)%60) + u'\n'
 		if lon >= 0:
@@ -188,7 +188,7 @@ for row in data:
 # add interwiki to wikidata
 		repo = plwiki.data_repository()
 		data = DataPage(repo, wikidata)
-		data.setitem(summary=u'adding pl.wiki sitelink', items={'type': u'sitelink', 'site': 'pl', 'title': pl_wiki.title()})		
+		data.setitem(summary=u'adding pl.wiki sitelink', items={'type': u'sitelink', 'site': 'pl', 'title': pl_page.title()})		
 
 # counter
 		edit_ct += 1
