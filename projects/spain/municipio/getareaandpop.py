@@ -24,10 +24,12 @@ with open('mun_exp.csv', 'rb') as csvfile:
 		nr_ins = row[4]
 		area = row[8].replace(",", ".")
 		pop = row[9]
-		den = row[10]
-		print nr_ins, "|", area, "|", pop, "|", den, " =? ", float(pop)/float(area)
+		den = row[10].replace(",", ".")
+		if float(den) != round(float(pop)/float(area), 2):
+			print nr_ins, "|", area, "|", pop, "|", den, " =? ", float(pop)/float(area)
 # ... and write them to sqlite
-		cur.execute(u'UPDATE municipio SET population = ' + pop + u', area = ' + area + u' WHERE nr_inscripcion = ' + nr_ins )
+		else:
+			cur.execute(u'UPDATE municipio SET population = ' + pop + u', area = ' + area + u' WHERE nr_inscripcion = ' + nr_ins )
 	
 # close sqlite connection
 con.close()
