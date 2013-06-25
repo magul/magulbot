@@ -79,9 +79,6 @@ for temp in auto_com_temp:
 			auto_com[prov] = value
 auto_com[u'Cuenca'] = u'Kastylia-La Mancha'
 
-for i in auto_com.values():
-	print i
-
 # create dict of polish pages of provinces
 prov = dict()
 for province in provinces:
@@ -98,7 +95,7 @@ data = cur.fetchall()
 con.close()
 
 # limit edit
-max_edits = 50
+max_edits = 25
 edit_ct = 0
 
 # for every row in data
@@ -142,10 +139,10 @@ for row in data:
 		pl_page_text += u' |5. jednostka administracyjna = \n'
 		pl_page_text += u' |stanowisko zarządzającego    = \n'
 		pl_page_text += u' |zarządzający                 = \n'
-		pl_page_text += u' |powierzchnia                 = ' + str(area).replace('.',',') + '{{cytuj stronę | url = http://ssweb.mpt.es/REL/frontend/inicio/municipios/all/all/ | tytuł = Datos del registro de Entidades Locales | data dostępu = 2013-06-16 | autor = Ministerio de Hacienda y Administraciones Públicas | język = es }}\n'
+		pl_page_text += u' |powierzchnia                 = ' + str(area).replace('.',',') + u'<ref>{{cytuj stronę | url = http://ssweb.mpt.es/REL/frontend/inicio/municipios/all/all/ | tytuł = Datos del registro de Entidades Locales | data dostępu = 2013-06-16 | autor = Ministerio de Hacienda y Administraciones Públicas | język = es }}</ref>\n'
 		pl_page_text += u' |wysokość                     = \n'
 		pl_page_text += u' |rok                          = 2011\n'
-		pl_page_text += u' |liczba ludności              = ' + divide(population) + u'{{cytuj stronę | url = http://ssweb.mpt.es/REL/frontend/inicio/municipios/all/all/ | tytuł = Datos del registro de Entidades Locales | data dostępu = 2013-06-16 | autor = Ministerio de Hacienda y Administraciones Públicas | język = es }}\n'
+		pl_page_text += u' |liczba ludności              = ' + divide(population) + u'<ref>{{cytuj stronę | url = http://ssweb.mpt.es/REL/frontend/inicio/municipios/all/all/ | tytuł = Datos del registro de Entidades Locales | data dostępu = 2013-06-16 | autor = Ministerio de Hacienda y Administraciones Públicas | język = es }}</ref>\n'
 		pl_page_text += u' |gęstość zaludnienia          = ' + divide(int(population/area)) + u',' + str(population/area-int(population/area))[2:4] + u'\n'
 		pl_page_text += u' |numer kierunkowy             = \n'
 		pl_page_text += u' |kod pocztowy                 = \n'
@@ -162,7 +159,6 @@ for row in data:
 		pl_page_text += u' |commons                      = ' + (commons  + u'\n' if commons != None else u'\n')
 		pl_page_text += u' |wikipodróże                  = \n'
 		pl_page_text += u' |www                          = ' + (www + u'\n}}\n' if www != None else u'\n}}\n')
-		edit_ct += 1
 
 # body of article
 		pl_page_text += u"'''" + spanish_name + u"''' "
@@ -173,8 +169,9 @@ for row in data:
 		pl_page_text += u'\nPowierzchnia gminy wynosi ' + str(area).replace('.',',') + u' km<sup>2</sup>. W 2011 gminę zamieszkiwało ' + divide(population) + u' mieszkańców.\n\n'
 
 # outside links
-		pl_page_text += u'Zobacz też ==\n'
-		pl_page_text += u'* [' + www + u' Oficjalna strona gminy]\n\n'
+		if www != None:
+			pl_page_text += u'== Zobacz też ==\n'
+			pl_page_text += u'* [' + www + u' Oficjalna strona gminy]\n\n'
 
 # references
 		pl_page_text += u'{{Przypisy}}\n\n'
@@ -182,17 +179,19 @@ for row in data:
 # template and category
 		pl_page_text += u'{{Prowincja ' + pl_province + u'}}\n\n'
 		pl_page_text += u'{{DEFAULTSORT:' + default_sort + u'}}\n'
-		pl_page_text += u'[[Kategoria:Gminy ' + auto_com_gen[auto_com[pl_province]] + u']]\n'
+		pl_page_text += u'[[Kategoria:Gminy ' + auto_com_gen[auto_com[pl_province]] + u']]\n'		
 
+# put page in wikipedia
+		print '===================================>', pl_page.title()
 		print pl_page_text
+		pl_page.put(pl_page_text, u'Bot dodaje artykuł nt. gminy Hiszpanii')
+# add interwiki to wikidata
+		repo = plwiki.data_repository()
+		data = DataPage(repo, wikidata)
+		data.setitem(summary=u'adding pl.wiki sitelink', items={'type': u'sitelink', 'site': 'pl', 'title': pl_wiki.title()})		
 
 # counter
+		edit_ct += 1
 		if edit_ct == max_edits:
 			break
 
-
-
-
-
-
-# przypisy
