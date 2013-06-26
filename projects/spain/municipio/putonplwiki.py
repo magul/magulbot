@@ -163,7 +163,7 @@ for row in data:
 # body of article
 		pl_page_text += u"'''" + spanish_name + u"''' "
 		if other_name != None:
-			pl_page_text += u'([[Język '+ (u'baskijski|baskijski' if other_name == u'b' else u'walencki|walencki') + u"]]: ''" + other_name + "'') " 
+			pl_page_text += u'([[Język '+ (u'baskijski|baskijski' if other_language == u'b' else u'walencki|walencki') + u"]]: ''" + other_name + "'') " 
 		pl_page_text += u' - gmina w [[Hiszpania|Hiszpanii]], w [[Prowincje Hiszpanii|prowincji]] [[' + prov[pl_province] + (u'|' + pl_province + u']], ' if pl_province != prov[pl_province] else u']], ')
 		pl_page_text += u'[[' + auto_com[pl_province] + (u'|' + auto_com[pl_province][:auto_com[pl_province].find(u'(')-1] + u']].\n' if u'(' in auto_com[pl_province] else u']].\n')
 		pl_page_text += u'\nPowierzchnia gminy wynosi ' + str(area).replace('.',',') + u' km<sup>2</sup>. W 2011 gminę zamieszkiwało ' + divide(population) + u' mieszkańców.\n\n'
