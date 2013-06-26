@@ -95,7 +95,7 @@ data = cur.fetchall()
 con.close()
 
 # limit edit
-max_edits = 100
+max_edits = 200
 edit_ct = 0
 
 # for every row in data
@@ -129,7 +129,7 @@ for row in data:
 		pl_page_text += u' |opis zdjęcia                 = \n'
 		pl_page_text += u' |herb                         = ' + (coa + u'\n' if coa != None else u'\n')
 		pl_page_text += u' |flaga                        = ' + (flag + u'\n' if flag != None else u'\n')
-		pl_page_text += u' |dopełniacz nazwy             = \n'
+		pl_page_text += u' |dopełniacz nazwy             = ' + spanish_name + u'\n'
 		pl_page_text += u' |państwo                      = ESP\n'
 		pl_page_text += u' |wariant flagi                = \n'
 		pl_page_text += u' |1. jednostka administracyjna = [[' + auto_com[pl_province] + (u'|' + auto_com[pl_province][:auto_com[pl_province].find(u'(')-1] + u']]\n' if u'(' in auto_com[pl_province] else u']]\n')
@@ -164,7 +164,7 @@ for row in data:
 		pl_page_text += u"'''" + spanish_name + u"''' "
 		if other_name != None:
 			pl_page_text += u'([[Język '+ (u'baskijski|baskijski' if other_language == u'b' else u'walencki|walencki') + u"]]: ''" + other_name + "'') " 
-		pl_page_text += u' - gmina w [[Hiszpania|Hiszpanii]], w [[Prowincje Hiszpanii|prowincji]] [[' + prov[pl_province] + (u'|' + pl_province + u']], ' if pl_province != prov[pl_province] else u']], ')
+		pl_page_text += u'– gmina w [[Hiszpania|Hiszpanii]], w [[Prowincje Hiszpanii|prowincji]] [[' + prov[pl_province] + (u'|' + pl_province + u']], ' if pl_province != prov[pl_province] else u']], ')
 		pl_page_text += u'[[' + auto_com[pl_province] + (u'|' + auto_com[pl_province][:auto_com[pl_province].find(u'(')-1] + u']].\n' if u'(' in auto_com[pl_province] else u']].\n')
 		pl_page_text += u'\nPowierzchnia gminy wynosi ' + str(area).replace('.',',') + u' km<sup>2</sup>. W 2011 gminę zamieszkiwało ' + divide(population) + u' mieszkańców.\n\n'
 
