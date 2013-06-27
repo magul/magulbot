@@ -6,14 +6,14 @@ DONE retreive names from website, because export to cvs makes some bugs
 DONE obtain spanish names (remember about prefixes)
 DONE obtain names in other languages (remember about polish)
 DONE obtain wikidata
+DONE obtain longitude and lattitude (using OSM's nominatim) (finish script)
+DONE obtain populations
+DONE obtain area
+DONE calculate density
+DONE obtain commons page/category
+DONE find coas and flags
+DONE find most suitable map/photo
 
-* obtain longitude and lattitude (using OSM's nominatim) (finish script)
 
-
-* obtain populations
-* obtain area
-* calculate density
-* obtain commons page/category
-* find coas and flags
-* find most suitable map/photo
-...
+fix problem with density
+apply changes from pl.wiki community
