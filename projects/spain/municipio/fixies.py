@@ -41,3 +41,12 @@ auto_com_gen = {u'Andaluzja' : u'Andaluzji', u'Aragonia' : u'Aragonii', u'Asturi
                 u'Kraj Basków' : u'Kraju Basków', u'Madryt (wspólnota autonomiczna)' : 'Madrytu',
                 u'Murcja (wspólnota autonomiczna)' : u'Murcji', u'Nawarra (prowincja)' : u'Nawarry',
                 u'Walencja (wspólnota autonomiczna)' : 'Walencji', u'Wyspy Kanaryjskie' : u'Wysp Kanaryjskich'}
+
+auto_com_loc = {u'Andaluzja' : u'Andaluzji', u'Aragonia' : u'Aragonii', u'Asturia' : u'Asturii',
+                u'Baleary' : u'wspólnocie autonomicznej Balearów', u'Estremadura (Hiszpania)' : u'Estramadurze',
+                u'Galicja (Hiszpania)' : u'Galicji', u'Kantabria' : u'Kantabrii', 
+                u'Kastylia i León' : u'Kastylii i León', u'Kastylia-La Mancha' : u'Kastylii-La Mancha',
+                u'Katalonia' : u'Katalonii', u'La Rioja (wspólnota autonomiczna)' : u'La Rioja',
+                u'Kraj Basków' : u'Kraju Basków', u'Madryt (wspólnota autonomiczna)' : 'wspólnocie autonomicznej Madrytu',
+                u'Murcja (wspólnota autonomiczna)' : u'Murcji', u'Nawarra (prowincja)' : u'Nawarze',
+                u'Walencja (wspólnota autonomiczna)' : 'Walencji', u'Wyspy Kanaryjskie' : u'wspólnocie autonomicznej Wysp Kanaryjskich'}
