@@ -188,7 +188,7 @@ for row in data:
 # put page in wikipedia
 			print '===================================>', pl_page.title()
 			print pl_page_text
-#			pl_page.put(pl_page_text, u'Bot dodaje artykuł nt. gminy Hiszpanii')
+			pl_page.put(pl_page_text, u'poprawki na podstawie [[pl:Wikipedysta:Magul/Orduña]]')
 			edit_ct += 1
 			if edit_ct == max_edits:
 				break
