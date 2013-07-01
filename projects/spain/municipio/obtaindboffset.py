@@ -18,13 +18,13 @@ con = lite.connect('municipio.sqlite', isolation_level=None)
 cur = con.cursor()
 
 # retrive data from website and parse it
-for i in range(0, 325):
+for i in range(238, 325):
 	htmltext = urllib.urlopen('http://ssweb.mpt.es/REL/frontend/inicio/municipios/all/all/'+str(i*25)).read()
 	soup = BeautifulSoup(htmltext)
 	numbers =  soup.find_all('td', class_="ac")
 	for j in range(25):
 		cur.execute(u'SELECT db_offset FROM municipio where nr_inscripcion="'+numbers[j*2].get_text().strip()[1:]+u'"')
-		if cur.fetchall()[0][0] == None:
+		if numbers[j*2].get_text().strip()[1:] != u'1510013' and numbers[j*2].get_text().strip()[1:] != u'1520018' and  cur.fetchall()[0][0] == None:
 			cur.execute('UPDATE municipio set db_offset="'+ str(i*25) + u'" where nr_inscripcion="'+numbers[j*2].get_text().strip()[1:]+u'"')
 			print 'UPDATE: ' , numbers[j*2].get_text().strip()[1:]
 		else:

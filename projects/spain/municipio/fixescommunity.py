@@ -90,13 +90,13 @@ for province in provinces:
 # get data from sqlite
 con = lite.connect('municipio.sqlite', isolation_level=None)
 cur = con.cursor()
-cur.execute(u'SELECT population, area, commons, image, www, flag, coa, lon, lat, wikidata, other_language, default_sort, other_name, spanish_name, current_plpage, pl_province, db_offset FROM municipio where current_plpage="Urduña/Orduña"')
+cur.execute(u'SELECT population, area, commons, image, www, flag, coa, lon, lat, wikidata, other_language, default_sort, other_name, spanish_name, current_plpage, pl_province, db_offset FROM municipio')
 data = cur.fetchall()
 #data = []
 con.close()
 
 # limit edit
-max_edits = 5
+max_edits = 25
 edit_ct = 0
 
 # for every row in data
@@ -173,7 +173,7 @@ for row in data:
 				pl_page_text += u'we [[' + auto_com[pl_province] + u'|' + auto_com_loc[auto_com[pl_province]] + u']], '
 			else:
 				pl_page_text += u'w [[' + auto_com[pl_province] + u'|' + auto_com_loc[auto_com[pl_province]] + u']], '
-			pl_page_text += u'o powierzchni ' + str(area).replace('.',',') + u' km². W 2011 roku gmina liczyła ' + divide(population) + u' mieszkańców.\n\n'
+			pl_page_text += u'o powierzchni ' + str(area).replace('.',',') + u'{{r|ssweb}} km². W 2011 roku gmina liczyła ' + divide(population) + u'{{r|ssweb}} mieszkańców.\n\n'
 # references
 			pl_page_text += u'== Przypisy ==\n'
 			pl_page_text += u'{{Przypisy-lista|\n'
@@ -187,7 +187,7 @@ for row in data:
 
 # put page in wikipedia
 			print '===================================>', pl_page.title()
-			print pl_page_text
+#			print pl_page_text
 			pl_page.put(pl_page_text, u'poprawki na podstawie [[pl:Wikipedysta:Magul/Orduña]]')
 			edit_ct += 1
 			if edit_ct == max_edits:
