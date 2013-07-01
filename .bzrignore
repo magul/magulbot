@@ -1,4 +1,5 @@
 *.pyc
 *.sqlite
 *.sqlite-journal
+*.sqlite.zip
 *.csv
