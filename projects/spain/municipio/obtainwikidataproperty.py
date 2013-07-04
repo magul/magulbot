@@ -17,9 +17,10 @@ con = lite.connect('municipio.sqlite', isolation_level=None)
 cur = con.cursor()
 #cur.execute(u'SELECT wikidata, coa, flag, commons, image, es_page FROM municipio where (flag not like "{{%" and flag not null)')
 #cur.execute(u'SELECT wikidata, coa, flag, commons, image, es_page FROM municipio where (coa not like "{{%" and coa not null)')
-cur.execute(u'SELECT wikidata, coa, flag, commons, image, es_page FROM municipio where (image not like "{{%" and image not null)')
+#cur.execute(u'SELECT wikidata, coa, flag, commons, image, es_page FROM municipio where (image not like "{{%" and image not null)')
 #cur.execute(u'SELECT wikidata, coa, flag, commons, image, es_page FROM municipio where commons  like "Category:%"')
-#cur.execute(u'SELECT wikidata, coa, flag, commons, image, es_page FROM municipio where (coa not like "{{%" and coa not null) or (flag not like "{{%" and flag not null) or (image not like "{[%" and image not null) or (commons not like "{{%" and commons not null)')
+cur.execute(u'SELECT wikidata, coa, flag, commons, image, es_page FROM municipio where (coa not like "{{%" and coa not null) or (flag not like "{{%" and flag not null) or (image not like "{[%" and image not null) or (commons not like "{{%" and commons not null)')
+
 data = cur.fetchall()
 
 print len(data)
@@ -33,10 +34,10 @@ for item in data:
 	image = (item[4] if item[4] != None else '')
 	es_page = item[5]
 
-	print "COA: ", coa
-	print "FLAG: ", flag
-	print "COMMONS: ", commons
-	print "IMAGE: ", image	
+#	print "COA: ", coa
+#	print "FLAG: ", flag
+#	print "COMMONS: ", commons
+#	print "IMAGE: ", image	
 
 	repo = wikidata.data_repository()
 	data = DataPage(repo, wd).get()
@@ -73,8 +74,8 @@ for item in data:
 			sql_upd += "phone_pref='{{#property:473}}', "
 
 	if sql_upd[-2] != 'T':
-		sql_upd = sql_upd[:-2] + " where es_page='" + es_page + "'"
-		print '\t\t\t\t', sql_upd
+		sql_upd = sql_upd[:-2] + ' where es_page="' + es_page + '"'
+#		print '\t\t\t\t', sql_upd
 		cur.execute(sql_upd)
 
 con.close()
