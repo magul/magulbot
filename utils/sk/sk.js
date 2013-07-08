@@ -1,311 +1,83 @@
-/* =====================================================
-	ujednolicanie szablonÛw wg:
-	http://pl.wikipedia.org/wiki/Wikiprojekt:Sprz%C4%85tanie_szablon%C3%B3w/redirecty#linkowane
-   ===================================================== */
-/*
-! bez  'nobots' : 'Bots',
-	re_obj.s = new Array(/(?:^|\n)#[ {]+noredirect\|Szablon:([^}]+)[^\[]+[\[]+Szablon:([^\]]+).+/g, /\n#.+/g);
-	re_obj.r = new Array(function(a,from,to) {if (from=='Nobots') {return '';} else return "\n\t'"+from.toLowerCase().replace('\\','\\\\').replace("'","\\'")+"' : '"+to.replace('\\','\\\\').replace("'","\\'")+"',";}, '');
-*/ // 2011-08-11
-wp_sk.sz_redirs_tab = {
-	'!w' : '!wrap',
-	'+-' : '.',
-	'-' : 'Clear',
-	'@' : 'E-mail',
-	'aktorka erotyczna infobox' : 'Aktor erotyczny infobox',
-	'animanga infobox/footer' : 'Animanga infobox/Stopka',
-	'animanga infobox/header' : 'Animanga infobox/Nag≥Ûwek',
-	'animanga infobox/header2' : 'Animanga infobox/Nag≥Ûwek2',
-	'bez zmian' : 'Stagnacja',
-	'bezpodpisu' : 'Podpisuj',
-	'braklicencji' : 'Brak licencji',
-	'brakopisu' : 'Brak licencji',
-	'bull' : '.',
-	'bullet' : '.',
-	'chem/disp0aa' : 'Chem/disp0A0',
-	'coord' : 'Koordynaty',
-	'cytuj czasopismo' : 'Cytuj pismo',
-	'dwinfoautora' : 'DWQ',
-	'dead link' : 'Martwy link',
-	'disambigp' : 'Przekierowanie',
-	'dopracowania' : 'DopracowaÊ',
-	'done' : 'Zrobione',
-	'dot' : '.',
-	'dp' : 'Dodaj pozwolenie',
-	'dyskusjapodpis' : 'Podpisuj',
-	'ek' : 'ek',
-	'edit' : 'Edytuj',
-	'ekspresowe kasowanko' : 'Ek',
-	'fakt/d' : 'Fd',
-	'fb r2 header' : 'Fb r header',
-	'formu≥a 1/oznaczenia' : 'Sporty motorowe/Oznaczenia',
-	'fs end' : 'Sk≥ad pi≥karski koniec',
-	'fs mid' : 'Sk≥ad pi≥karski ∂rodek',
-	'fs player' : 'Sk≥ad pi≥karski',
-	'fs start' : 'Sk≥ad pi≥karski start',
-	'glowny' : 'G≥Ûwny artyku≥',
-	'gmedal' : 'Ilustracja medalowa',
-	'icd-10' : 'ICD10',
-	'icd-9' : 'ICD9',
-	'icd-o' : 'ICDO',
-	'legend' : 'Legenda',
-	'mapa lokalizacyjna/sco' : 'Mapa lokalizacyjna/SCT',
-	'mapa lokalizacyjna/usa-hi' : 'Mapa lokalizacyjna/US-HI',
-	'mapa lokalizacyjna/wyspy kanaryjskie' : 'Mapa lokalizacyjna/ES-CN',
-	'mapa lokalizacyjna/∂wiat polityczna' : 'Mapa lokalizacyjna/¶wiat',
-	'mediavideo' : 'Wideo',
-	'middot' : '.',
-	'mistrzowie olimpijscy w pi≥ce noønej' : 'Mistrzowie olimpijscy w pi≥ce noønej mÍøczyzn',
-	'multilang' : 'Lang',
-	'nor' : 'TwÛrczo∂Ê w≥asna',
-	'nieaktualne' : 'Aktualizacja',
-	'nogmedal' : 'Ilustracji odebrano medal',
-	'nowa linia' : 'clear',
-	'odp' : 'Open Directory Project',
-	'og' : 'Dodaj licencjÍ',
-	'or' : 'TwÛrczo∂Ê w≥asna',
-	'osw' : 'Ostatnie stabilne wydanie',
-	'otw' : 'Ostatnie testowe wydanie',
-	'opisujgrafiki' : 'Dodaj licencjÍ',
-	'poczsdu' : 'DNU',
-	'poczsduinfo' : 'DNUinfo',
-	'poczsduplus' : 'poczSdUplus',
-	'poczsdu' : 'DNU',
-	'poczekalnia' : 'DNU',
-	'poprawiÊ' : 'DopracowaÊ',
-	'projektpoczsdu' : 'DNUinfo',
-	'rpr' : 'Reprezentant pi≥ki rÍcznej',
-	'sduinfo' : 'SDUinformacja',
-	'sduplus' : 'SdUplus',
-	'seealso' : 'Zobacz teø',
-	'symbol' : 'PD-symbol',
-	'testad' : 'Spam',
-	'testki' : 'TestK',
-	'testn' : 'Test3',
-	'testnie' : 'TestG',
-	'testp' : 'Test3',
-	'testpov' : 'TestPOV0',
-	'testspam' : 'Spam',
-	'testw' : 'Test2',
-	'testlink0' : 'Testlink',
-	'testø' : 'TestG',
-	'topopraw' : 'To popraw',
-	'unk' : 'Unknown',
-	'urlop' : 'Odpoczynek',
-	'usuÒ' : 'Ek',
-	'w' : 'wrap',
-	'wedycji' : 'W edycji',
-	'wedycji2' : 'W edycji 2',
-	'wiadomo∂ci' : 'Aktualno∂ci',
-	'wikiquote' : 'Wikicytaty',
-	'wikisource' : 'WikiºrÛd≥a',
-	'wikisource-cat' : 'WikiºrÛd≥a kat',
-	'wikisource-krotki' : 'WikiºrÛd≥a krÛtki',
-	'wikisource autor' : 'WikiºrÛd≥a autor',
-	'witaj-en' : 'Welcome',
-	'witaj-fr' : 'Bienvenue',
-	'witajip' : 'Anonim',
-	'zasada w jednym zdaniu' : 'W skrÛcie',
-	'zdjÍcie tyg' : 'Ilustracja na medal',
-	'zzw' : 'Zgodnie z Wikietykiet±',
-	'\\w' : '\\wrap',
-	'.w' : '.wrap',
-	'∂wiÍta infobox' : '¶wiÍty infobox',
-	'.w' : '.wrap',
-	'.w' : '.wrap'
-};
-
-// <nowiki>
 /* ------------------------------------------------------------------------ *\
-    Modu≥ sprz±tania kodu
+    Modu≈Ç sprzƒÖtania kodu
 
 	Opis:
 		http://pl.wikipedia.org/wiki/WP:SK
 
-    Copyright:  .2007-2011 Maciej Jaros (pl:User:Nux, en:User:EcceNux)
+    Copyright:  ¬©2007-2011 Maciej Jaros (pl:User:Nux, en:User:EcceNux)
      Licencja:  GNU General Public License v2
 		http://opensource.org/licenses/gpl-license.php
 
-	SzczegÛlne podziÍkowania dla:
-	* Wikipedysta:ABach - za zebranie i opracowanie d≥ugiej listy elementÛw do sprz±tania
-	* Wikipedysta:Malarz pl - za gar∂Ê kolejnych elementÛw do sprz±tania
-	* Wikipedysta:BartekChom - za pomys≥y i gotowe wyraøenia regularne
-	* Wikipedysta:Gregul - za gar∂Ê wyraøeÒ regularnych
-	* Wikipedysta:PMG - za wytrwa≥e i szczegÛ≥owe testowanie
-	* Wikipedysta:ToSter - za testy i pomys≥y na nowe rozwi±zania
+	Szczeg√≥lne podziƒôkowania dla:
+	* Wikipedysta:ABach - za zebranie i opracowanie d≈Çugiej listy element√≥w do sprzƒÖtania
+	* Wikipedysta:Malarz pl - za gar≈õƒá kolejnych element√≥w do sprzƒÖtania
+	* Wikipedysta:BartekChom - za pomys≈Çy i gotowe wyra≈ºenia regularne
+	* Wikipedysta:Gregul - za gar≈õƒá wyra≈ºe≈Ñ regularnych
+	* Wikipedysta:PMG - za wytrwa≈Çe i szczeg√≥≈Çowe testowanie
+	* Wikipedysta:ToSter - za testy i pomys≈Çy na nowe rozwiƒÖzania
 	* Wikipedysta:Beau - za inspiracje i poprawki
 \* ------------------------------------------------------------------------ */
-
-//
-// Modu≥y zewnÍtrzne dla projektÛw siostrzanych
-//
-if ( ( typeof sel_t ) !== 'object' ) {
-	mw.loader.load( '//pl.wikipedia.org/w/index.php?action=raw&ctype=text/javascript&title=MediaWiki:Gadget-sel_t.js' );
-}
 
 /* =====================================================
 	Object Init
    ===================================================== */
-
-if ( typeof( wp_sk_show_as_button ) === 'undefined' ) {
-	window.wp_sk_show_as_button = true;
-}
-if ( typeof( wp_sk_redir_enabled ) === 'undefined' ) {
-	window.wp_sk_redir_enabled = false;
-}
-
-if (window.wp_sk)
-{
-	alert('B≥±d krytyczny - konflikt nazw!\n\nJeden ze skryptÛw uøywa juø nazwy wp_sk jako zmienn± globaln±.');
-}
-window.wp_sk = new Object();
-wp_sk.version = '2.7.31a';
-
-/* =====================================================
-	Function: wp_sk.debug(htxt)
-
-	Wy∂wietlenie komunikatu html je∂li debug aktywny
-   ===================================================== */
-wp_sk.debug = function (htxt)
-{
-	if (typeof wp_sk_debug_enabled!='undefined' && wp_sk_debug_enabled && typeof nux_debug=='function')
-	{
-		nux_debug(htxt);
-	}
-}
-
-/* =====================================================
-	Function: wp_sk.button()
-
-	Dodaje przycisk sprz±tania
-   ===================================================== */
-wp_sk.button = function() {
-	var that = this;
-	mw.loader.using( "ext.gadget.lib-toolbar", function() {
-		toolbarGadget.addButton( {
-			title: 'Sprz±tanie kodu (wer. ' + that.version + ')',
-			alt: 'SK',
-			id: 'wp_sk_img_btn',
-			oldIcon: '//upload.wikimedia.org/wikipedia/commons/2/2e/Button_broom.png',
-			newIcon: '//commons.wikimedia.org/w/thumb.php?f=Broom%20icon.svg&w=22',
-			onclick: function() {
-				that.cleanup( document.getElementById( 'wpTextbox1' ) );
-			}
-		} );
-	} );
-}
-
-/* =====================================================
-	Function: wp_sk.warning(input)
-
-	Dodaje ostrzeøenie i likwiduje je
-	po wci∂niÍciu odpowiedniego przycisku
-   ===================================================== */
-wp_sk.warning = function() {
-	var $summary = jQuery( '#wpSummary' );
-	if ( this.nochanges ) {
-		// kolorowanka, gdy bez zmian
-		$summary.css( 'border', '2px solid #696' );
-	} else if ( mw.config.get( 'wgArticleId' ) > 0 ) {
-		$summary.css( 'border', '' );
-
-		var text = $summary.val();
-
-		var summary1 = 'po czyszczeniu kodu przejrzyj wykonane zmiany!';
-		var summary2 = mw.config.get( 'wp-sk-summary', '[[WP:SK]]' );
-
-		if ( text.indexOf( summary1 ) > -1 || text.indexOf( summary2 ) > -1 ) {
-			// opis juø jest, nie potrzeba nastÍpnego
-			return;
-		}
-
-		if ( text != '' ) {
-			text += ', ';
-		}
-		text += summary1;
-		$summary.val( text );
-		$summary.addClass( 'summaryWarning' );
-
-		var $diff = jQuery( '#wpDiff' );
-		$diff.addClass( 'summaryWarning' );
-		$diff.click( function() {
-			$summary.val( $summary.val().replace( summary1, summary2 ) );
-		} );
-	}
-}
-
+wp_sk = new Object();
 
 /* =====================================================
 	Function: wp_sk.cleanup(input)
 
-	G≥Ûwna funkcja inicjuj±ca i wywo≥uj±ca funkcjÍ
-	czyszcz±c±
+	G≈Ç√≥wna funkcja inicjujƒÖca i wywo≈ÇujƒÖca funkcjƒô
+	czyszczƒÖcƒÖ
    ===================================================== */
-wp_sk.cleanup = function (input)
+wp_sk.cleanup = function (str)
 {
-	// default input
-	if (!input)
-	{
-		input = document.getElementById('wpTextbox1')
-	}
-	//
-	// Pobierz zaznaczony fragment (ca≥o∂Ê je∂li nic nie zaznaczone)
-	//
-	var str = sel_t.getSelStr(input, true);
+	
 	// OMG - IE & Opera fix
 	str = str.replace(/\r\n/g, '\n');
 
 	//
-	// Wywo≥anie czyszciciela
+	// Wywo≈Çanie czyszciciela
 	//
-	str = str.replace(/\n+$/,''); // bez koÒcowych enterÛw
-	var str_pre = str;
+	str = str.replace(/\n+$/,''); // bez ko≈Ñcowych enter√≥w
 	str = wp_sk.cleaner(str);
-	wp_sk.nochanges = (str==str_pre);
-
+	
 	//
 	// zapisanie zmian
 	//
-	if (!wp_sk.nochanges)
-	{
-		sel_t.qsetSelStr(input, str, true);
-	}
+	return str
 
-	input.focus();
-
-	wp_sk.warning();
 }
 
 /* =====================================================
 	Function: wp_sk.cleaner(str)
 
-	Funkcja czyszcz±ca podany na wej∂ciu ci±g znakÛw str.
-	Zwraca przetworzony ci±g znakÛw.
+	Funkcja czyszczƒÖca podany na wej≈õciu ciƒÖg znak√≥w str.
+	Zwraca przetworzony ciƒÖg znak√≥w.
    ===================================================== */
 wp_sk.cleaner = function (str)
 {
 	//
-	// ukrywanie obszarÛw w tagach: nowiki, pre, source i math
+	// ukrywanie obszar√≥w w tagach: nowiki, pre, source i math
 	str = wp_sk.nowiki.hide(str);
 
 	//
-	// sprz±tanie podstawowe
+	// sprzƒÖtanie podstawowe
 	str = wp_sk.cleanerLinks(str);		// wikilinki
 	str = wp_sk.cleanerTpls(str);		// szablony
-	str = wp_sk.cleanerWikiVaria(str);	// pozosta≥e wikisk≥adniowe
+	str = wp_sk.cleanerWikiVaria(str);	// pozosta≈Çe wikisk≈Çadniowe
 
-	str = wp_sk.cleanerTXT(str);		// poza sk≥adniowe
+	str = wp_sk.cleanerTXT(str);		// poza sk≈Çadniowe
 
 	if (wp_sk.projectSpecificCleanup) {
 		str = wp_sk.projectSpecificCleanup(str);
 	}
 
 	//
-	// koÒcowe porz±dkowanie miÍdzywiki itp
+	// ko≈Ñcowe porzƒÖdkowanie miƒôdzywiki itp
 	str = wp_sk.cleanerMagicLinks(str);
 
 	//
-	// przywrÛcenie ukrytych tagÛw
+	// przywr√≥cenie ukrytych tag√≥w
 	str = wp_sk.nowiki.show(str);
 
 	return str;
@@ -314,13 +86,13 @@ wp_sk.cleaner = function (str)
 /* =====================================================
 	Function: wp_sk.cleanerLinks(str)
 
-	Sprz±tanie wikilinkÛw
+	SprzƒÖtanie wikilink√≥w
    ===================================================== */
 wp_sk.cleanerLinks = function (str)
 {
-	// [[http://]].[http://...]
+	// [[http://]]‚Üí[http://...]
 	str = str.replace(/\[\[([a-z]+:\/\/[^\|\]]+)\]\]/g, '[$1]');
-	// [[Kto%C5%9B_jaki%C5%9B#co.C5.9B|...]].[[Kto∂ jaki∂#co∂|...]]
+	// [[Kto%C5%9B_jaki%C5%9B#co.C5.9B|...]]‚Üí[[Kto≈õ jaki≈õ#co≈õ|...]]
 	str = str.replace(/\[\[([^|#\]]*)([^|\]]*)(\||\]\])/g, wp_sk.rLinkdecode);
 
 	// poprawa nazw przestrzeni i drobne okoliczne
@@ -331,7 +103,7 @@ wp_sk.cleanerLinks = function (str)
 
 	str = str.replace(/\[\[ *:? *[Dd]yskusja( [a-z]*) *: */g, '[[Dyskusja$1:');
 
-	// usuniÍcie klucza sortowania kat. je∂li w ca≥o∂ci jest prefiksem nazwy artyku≥u lub nazw± artyku≥u
+	// usuniƒôcie klucza sortowania kat. je≈õli w ca≈Ço≈õci jest prefiksem nazwy artyku≈Çu lub nazwƒÖ artyku≈Çu
 	if (str.search(/\{\{[ ]*DEFAULTSORT[ ]*:/)==-1)
 	{
 		str = str.replace(/\[\[(Kategoria:[^\|\[\]\n]+)\|([^\|\[\]\n]+)\]\]/gi,
@@ -345,13 +117,13 @@ wp_sk.cleanerLinks = function (str)
 		);
 	}
 
-	// zbÍdne w obrazkach
+	// zbƒôdne w obrazkach
 	str = str.replace(/(\[\[Plik:[^\n\|\]]+?\|thumb)\|right/g, '$1');		// niepotrzebne
 	str = str.replace(/(\[\[Plik:[^\n\|\]]+?)\|right(\|thumb)/g, '$1$2');		// niepotrzebne
-	str = str.replace(/(\[\[Plik:[^\|\]]+?\|)frame(\|[0-9x]+px)/, '$1thumb$2');	// prawie na pewno b≥±d
+	str = str.replace(/(\[\[Plik:[^\|\]]+?\|)frame(\|[0-9x]+px)/, '$1thumb$2');	// prawie na pewno b≈ÇƒÖd
 	str = str.replace(/(\[\[Plik:[^\|\]]+\|[^\|\]]+)\.\]\]/, '$1]]');	// kropka
 	// -mid spacje
-	/* // zawiesza FF w niektÛrych warunkach, psuje niektÛre opisy
+	/* // zawiesza FF w niekt√≥rych warunkach, psuje niekt√≥re opisy
 	str = str.replace(/(\[\[Plik:[^\|\[\]]+)(\|[^\[\]\{\}]+ [^\[\]\{\}]*)(\|([^\|\[\]]+|[^\|\[\]]+\[\[[^\[\]]+\]\]){7,}\]\])/g, function(a,g1,gmid,gn)
 	{
 		return g1+ gmid.replace(/\s/g,'') +gn;
@@ -368,16 +140,16 @@ wp_sk.cleanerLinks = function (str)
 	str = str.replace(/\[\[ *([^\]\|:]+) *\| *\| */g, '[[$1|');
 
 	//
-	// (ro)zwijanie wikilinkÛw
+	// (ro)zwijanie wikilink√≥w
 	// [[Link|link]] > [[link]] i [[Link|linka]] > [[link]]a
-	//str = str.replace(/\[\[([^|\]])([^|\]]*)\|([^\]])\2([a-zA-ZøÛ≥ÊÍ∂±ºÒØ”£∆ ¶°¨—]*)\]\]/g, function (a, w1_1, w_rest, w2_1, poza)
-	str = str.replace(/\[\[([^|\]])([^|\]]*)\|([^\]])\2([a-zøÛ≥ÊÍ∂±ºÒ]*)\]\]/g, function (a, w1_1, w_rest, w2_1, poza)
+	//str = str.replace(/\[\[([^|\]])([^|\]]*)\|([^\]])\2([a-zA-Z≈º√≥≈Çƒáƒô≈õƒÖ≈∫≈Ñ≈ª√ì≈ÅƒÜƒò≈öƒÑ≈π≈É]*)\]\]/g, function (a, w1_1, w_rest, w2_1, poza)
+	str = str.replace(/\[\[([^|\]])([^|\]]*)\|([^\]])\2([a-z≈º√≥≈Çƒáƒô≈õƒÖ≈∫≈Ñ]*)\]\]/g, function (a, w1_1, w_rest, w2_1, poza)
 	{
 		return (w1_1.toUpperCase()==w2_1.toUpperCase()) ? '[['+w2_1+w_rest+']]'+poza : a;
 	});
 	// [[Link|link]]er > [[Link|linker]]
-	//str = str.replace(/\[\[([^|\]]+)\|([^|\]]+)\]\]([a-zA-ZøÛ≥ÊÍ∂±ºÒØ”£∆ ¶°¨—]+)/g, '[[$1|$2$3]]');
-	str = str.replace(/\[\[([^|\]]+)\|([^|\[\]]+)\]\]([a-zøÛ≥ÊÍ∂±ºÒ]+)/g, '[[$1|$2$3]]');
+	//str = str.replace(/\[\[([^|\]]+)\|([^|\]]+)\]\]([a-zA-Z≈º√≥≈Çƒáƒô≈õƒÖ≈∫≈Ñ≈ª√ì≈ÅƒÜƒò≈öƒÑ≈π≈É]+)/g, '[[$1|$2$3]]');
+	str = str.replace(/\[\[([^|\]]+)\|([^|\[\]]+)\]\]([a-z≈º√≥≈Çƒáƒô≈õƒÖ≈∫≈Ñ]+)/g, '[[$1|$2$3]]');
 
 	// usuwanie spacji w wikilinkach
 	str = str.replace(/\[\[ *([^\]\|:]*[^\]\| ]) *\|/g, '[[$1|');
@@ -385,30 +157,30 @@ wp_sk.cleanerLinks = function (str)
 	str = str.replace(/\[\[ +/g, '[[');
 	str = str.replace(/([^ \t\n])\[\[([^\]\|:]+)\| +/g, '$1 [[$2|');
 	str = str.replace(/\[\[([^\]\|:]+)\| +/g, '[[$1|');
-	str = str.replace(/([^ \|]) +\]\]([^ \t\na-zA-ZøÛ≥ÊÍ∂±ºÒØ”£∆ ¶°¨—])/g, '$1]] $2');
-	str = str.replace(/([^ \|]) +\]\]([^a-zA-ZøÛ≥ÊÍ∂±ºÒØ”£∆ ¶°¨—])/g, '$1]]$2');
+	str = str.replace(/([^ \|]) +\]\]([^ \t\na-zA-Z≈º√≥≈Çƒáƒô≈õƒÖ≈∫≈Ñ≈ª√ì≈ÅƒÜƒò≈öƒÑ≈π≈É])/g, '$1]] $2');
+	str = str.replace(/([^ \|]) +\]\]([^a-zA-Z≈º√≥≈Çƒáƒô≈õƒÖ≈∫≈Ñ≈ª√ì≈ÅƒÜƒò≈öƒÑ≈π≈É])/g, '$1]]$2');
 
-	// sklejanie skrÛtÛw linkowych
+	// sklejanie skr√≥t√≥w linkowych
 	str = str.replace(/m\.? ?\[\[n\.? ?p\.? ?m\.?\]\]/g, 'm [[n.p.m.]]');
 
 	// korekty dat - niepotrzebny przecinek
-	str = str.replace(/(\[\[[0-9]+ (stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|wrze∂nia|paºdziernika|listopada|grudnia)\]\]), (\[\[[0-9]{4}\]\])/g, '$1 $3');
+	str = str.replace(/(\[\[[0-9]+ (stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|wrze≈õnia|pa≈∫dziernika|listopada|grudnia)\]\]), (\[\[[0-9]{4}\]\])/g, '$1 $3');
 
-	// linkowanie do wiekÛw
+	// linkowanie do wiek√≥w
 	str = str.replace(/\[\[([XVI]{1,5}) [wW]\.?\]\]/g, '[[$1 wiek|$1 w.]]');
 	str = str.replace(/\[\[([XVI]{1,5}) [wW]\.?\|/g, '[[$1 wiek|');
 	str = str.replace(/\[\[(III|II|IV|VIII|VII|VI|IX|XIII|XII|XI|XIV|XV|XVIII|XVII|XVI|XIX|XXI|XX)\]\]/g, '[[$1 wiek|$1]]');
 	str = str.replace(/\[\[(III|II|IV|VIII|VII|VI|IX|XIII|XII|XI|XIV|XV|XVIII|XVII|XVI|XIX|XXI|XX)\|/g, '[[$1 wiek|');
 
-	// rozwijanie typowych linkÛw
-	str = str.replace(/\[\[ang\.\]\]/g, '[[jÍzyk angielski|ang.]]');
-	str = str.replace(/\[\[cz\.\]\]/g, '[[jÍzyk czeski|cz.]]');
-	str = str.replace(/\[\[fr\.\]\]/g, '[[jÍzyk francuski|fr.]]');
-	str = str.replace(/\[\[≥ac\.\]\]/g, '[[≥acina|≥ac.]]');
-	str = str.replace(/\[\[niem\.\]\]/g, '[[jÍzyk niemiecki|niem.]]');
-	str = str.replace(/\[\[pol\.\]\]/g, '[[jÍzyk polski|pol.]]');
-	str = str.replace(/\[\[pl\.\]\]/g, '[[jÍzyk polski|pol.]]');
-	str = str.replace(/\[\[ros\.\]\]/g, '[[jÍzyk rosyjski|ros.]]');
+	// rozwijanie typowych link√≥w
+	str = str.replace(/\[\[ang\.\]\]/g, '[[jƒôzyk angielski|ang.]]');
+	str = str.replace(/\[\[cz\.\]\]/g, '[[jƒôzyk czeski|cz.]]');
+	str = str.replace(/\[\[fr\.\]\]/g, '[[jƒôzyk francuski|fr.]]');
+	str = str.replace(/\[\[≈Çac\.\]\]/g, '[[≈Çacina|≈Çac.]]');
+	str = str.replace(/\[\[niem\.\]\]/g, '[[jƒôzyk niemiecki|niem.]]');
+	str = str.replace(/\[\[pol\.\]\]/g, '[[jƒôzyk polski|pol.]]');
+	str = str.replace(/\[\[pl\.\]\]/g, '[[jƒôzyk polski|pol.]]');
+	str = str.replace(/\[\[ros\.\]\]/g, '[[jƒôzyk rosyjski|ros.]]');
 	str = str.replace(/\[\[(((G|g)iga|(M|m)ega|(K|k)ilo)herc|[GMk]Hz)\|/g, '[[herc|');
 
 	return str;
@@ -416,14 +188,14 @@ wp_sk.cleanerLinks = function (str)
 /* =====================================================
 	Function: wp_sk.cleanerTpls(str)
 
-	Sprz±tanie szablonÛw
+	SprzƒÖtanie szablon√≥w
    ===================================================== */
 wp_sk.cleanerTpls = function (str)
 {
-	// niepotrzebna przestrzeÒ
+	// niepotrzebna przestrze≈Ñ
 	str = str.replace(/\{\{ *([Tt]emplate|[Ss]zablon|msg) *: */g, '{{');
 
-	// zbÍdne spacje w szablonach jedno wierszowych
+	// zbƒôdne spacje w szablonach jedno wierszowych
 	str = str.replace(/\{\{[ \t]+([^\n\{\} ]+)[ \t]*\}\}/g, '{{$1}}').replace(/\{\{([^\n\{\}]+)[ \t]+\}\}/g, '{{$1}}');
 
 	// poprawki lang i nowy multilang
@@ -434,10 +206,10 @@ wp_sk.cleanerTpls = function (str)
 		return '{{lang'+a.replace(/\{\{lang\|([a-z-]+)\}\}\s*/g, '|$1')+'}}';
 	});
 
-	// wci±ganie {{lang}} do szablonÛw cytowania
-	str = str.replace(/{{(cytuj [^{}]+?)}} {{lang\|([a-z-]+)}}/gi, '{{$1 | jÍzyk = $2}}');
+	// wciƒÖganie {{lang}} do szablon√≥w cytowania
+	str = str.replace(/{{(cytuj [^{}]+?)}} {{lang\|([a-z-]+)}}/gi, '{{$1 | jƒôzyk = $2}}');
 
-	// ujednolicanie nazw szablonÛw (tabela poniøej)
+	// ujednolicanie nazw szablon√≥w (tabela poni≈ºej)
 	str = str.replace(/\{\{([sS]\||)([^{}\n\|]+)(\||\}\})/g, function(a, pre, nazwa, post)
 	{
 		nazwa = nazwa.toLowerCase();
@@ -450,7 +222,7 @@ wp_sk.cleanerTpls = function (str)
 
 	str = str.replace(/\{\{commons\|Category:/gi, '{{commonscat|');
 
-	// poprawka, bo FF wywala siÍ na czo≥gach np. http://pl.wikipedia.org/w/index.php?title=T-72&diff=14511491&oldid=14437344
+	// poprawka, bo FF wywala siƒô na czo≈Çgach np. http://pl.wikipedia.org/w/index.php?title=T-72&diff=14511491&oldid=14437344
 	str = str.replace(/<!--[\s\S]+?-->/g, function(a) {
 		a
 			.replace(/\{/g,'###comment_klamra_l###')
@@ -458,7 +230,7 @@ wp_sk.cleanerTpls = function (str)
 		;
 		return a;
 	});
-	// ucz≥owieczanie szablonÛw
+	// ucz≈Çowieczanie szablon√≥w
 	str = str.replace(/\{\{([^|}]+?[ _]infobo[^|}]+)((?:[^{}]|[^{}][{}][^{}]|\{\{(?:[^{}]|[^{}][{}][^{}]|\{\{[^{}]+\}\})+\}\})+)\}\}/g, wp_sk.rFriendlyIbox);
 	// rev poprawki
 	str = str.replace(/<!--[\s\S]+?-->/g, function(a) {
@@ -474,54 +246,52 @@ wp_sk.cleanerTpls = function (str)
 /* =====================================================
 	Function: wp_sk.cleanerWikiVaria(str)
 
-	Sprz±tanie pozosta≥ych elementÛw wikisk≥adni
+	SprzƒÖtanie pozosta≈Çych element√≥w wikisk≈Çadni
    ===================================================== */
 wp_sk.cleanerWikiVaria = function (str)
 {
-	if ( mw.config.get( 'wp-sk-fix-wikipedia-sections', true ) ) {
-		// unifikacja nag≥Ûwkowa
-		str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (teø|takøe|rÛwnieø):* *'''?[ \t]*\n[ \t\n]*/gi, '\n\n== Zobacz teø ==\n');
-		str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (teø|takøe|rÛwnieø):* *'''?[ \t]*(.+)/gi, function(a, w1, w2, linki)
+	// unifikacja nag≈Ç√≥wkowa
+	str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (te≈º|tak≈ºe|r√≥wnie≈º):* *'''?[ \t]*\n[ \t\n]*/gi, '\n\n== Zobacz te≈º ==\n');
+	str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (te≈º|tak≈ºe|r√≥wnie≈º):* *'''?[ \t]*(.+)/gi, function(a, w1, w2, linki)
+	{
+		if (linki.indexOf('[')!=-1)
 		{
-			if (linki.indexOf('[')!=-1)
+			// add first list el.
+			linki = '* ' + linki;
+			// next?
+			if (linki.indexOf(',')!=-1)
 			{
-				// add first list el.
-				linki = '* ' + linki;
-				// next?
-				if (linki.indexOf(',')!=-1)
-				{
-					// escape in-link and in-tpl comma
-					var escape_fun = function(a){ return a.replace(/,/g,'<<<#>>>') };
-					linki = linki.replace(/\[\[[^\[\]]+\]\]/g, escape_fun);
-					linki = linki.replace(/\{\{[^\{\}]+\}\}/g, escape_fun);
-					// split
-					linki = linki.replace(/,[ \t]*/g, '\n* ');
-					// unescape
-					linki = linki.replace(/<<<#>>>/g,',');
-				}
+				// escape in-link and in-tpl comma
+				var escape_fun = function(a){ return a.replace(/,/g,'<<<#>>>') };
+				linki = linki.replace(/\[\[[^\[\]]+\]\]/g, escape_fun);
+				linki = linki.replace(/\{\{[^\{\}]+\}\}/g, escape_fun);
+				// split
+				linki = linki.replace(/,[ \t]*/g, '\n* ');
+				// unescape
+				linki = linki.replace(/<<<#>>>/g,',');
 			}
-			return '\n\n== Zobacz teø ==\n'+linki;
-		});
-		str = str.replace(/[ \n\t]*\n(=+) *(Zobacz|Patrz) (teø|takøe|rÛwnieø):* *=+[ \n\t]*/gi, '\n\n$1 Zobacz teø $1\n');
-		str = str.replace(/[ \n\t]*\n'''? *((ZewnÍtrzn[ey] )?(Linki?|£±cza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eÍ]trzn[aey])?):* *'''?[ \n\t]*/gi, '\n\n== Linki zewnÍtrzne ==\n');
-		str = str.replace(/[ \n\t]*\n(=+) *((ZewnÍtrzn[ey] )?(Linki?|£±cza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eÍ]trzn[aey])?):* *=+[ \n\t]*/gi, '\n\n$1 Linki zewnÍtrzne $1\n');
-		str = str.replace(/[ \n\t]*\n(=+) *([¨ØZ]r[Ûo]d[≥l]a):* *=+[ \n\t]*/gi, '\n\n$1 ¨rÛd≥a $1\n');
-	}
+		}
+		return '\n\n== Zobacz te≈º ==\n'+linki;
+	});
+	str = str.replace(/[ \n\t]*\n(=+) *(Zobacz|Patrz) (te≈º|tak≈ºe|r√≥wnie≈º):* *=+[ \n\t]*/gi, '\n\n$1 Zobacz te≈º $1\n');
+	str = str.replace(/[ \n\t]*\n'''? *((Zewnƒôtrzn[ey] )?(Linki?|≈ÅƒÖcza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eƒô]trzn[aey])?):* *'''?[ \n\t]*/gi, '\n\n== Linki zewnƒôtrzne ==\n');
+	str = str.replace(/[ \n\t]*\n(=+) *((Zewnƒôtrzn[ey] )?(Linki?|≈ÅƒÖcza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eƒô]trzn[aey])?):* *=+[ \n\t]*/gi, '\n\n$1 Linki zewnƒôtrzne $1\n');
+	str = str.replace(/[ \n\t]*\n(=+) *([≈π≈ªZ]r[√≥o]d[≈Çl]a):* *=+[ \n\t]*/gi, '\n\n$1 ≈πr√≥d≈Ça $1\n');
 
-	// nag≥Ûwki
+	// nag≈Ç√≥wki
 	str = str.replace(/(^|\n)(=+) *([^=\n].*?)[ :]*\2(?=\s)/g, '$1$2 $3 $2'); // =a= > = a =, =a:= > = a =
 	str = str.replace(/(^|\n)(=+[^=\n]+=+)[\n]{2,}/g, '$1$2\n');	// jeden \n
 
-	if ( mw.config.get( 'wp-sk-fix-wikipedia-sections', true ) ) {
-		// przypisy - szablon
-		str = str.replace(/\n== Przypisy ==[ \t\n]+<references ?\/>/g, '\n{{Przypisy}}');
-		str = str.replace(/\n(={3,}) Przypisy \1[ \t\n]+<references ?\/>/g, '\n{{Przypisy|stopieÒ= $1}}');
-		str = str.replace(/\{\{Przypisy\|stopieÒ==/g, '{{Przypisy|stopieÒ= =');
-	}
+	
+	// przypisy - szablon
+	str = str.replace(/\n== Przypisy ==[ \t\n]+<references ?\/>/g, '\n{{Przypisy}}');
+	str = str.replace(/\n(={3,}) Przypisy \1[ \t\n]+<references ?\/>/g, '\n{{Przypisy|stopie≈Ñ= $1}}');
+	str = str.replace(/\{\{Przypisy\|stopie≈Ñ==/g, '{{Przypisy|stopie≈Ñ= =');
+	
 
-	// przypisy - przyprz±tniÍcia
+	// przypisy - przyprzƒÖtniƒôcia
 	/*
-	// rozwijamy {{r}}, bo kod niøej pracuje na <ref/>-ach
+	// rozwijamy {{r}}, bo kod ni≈ºej pracuje na <ref/>-ach
 	str = str.replace(/{{r((?:\|[^|}]+)*)}}/g, function(a, inside) {
 		return inside.replace(/\|([^|}]+)/g, function(b, name) {
 			// escape'ujemy " w nazwach
@@ -531,7 +301,7 @@ wp_sk.cleanerWikiVaria = function (str)
 	*/
 	
 	str = str.replace(/<(ref[^<>\/]*?)[ ]*><\/ref>/g, "<$1 />");	// puste na pojedynczy
-	str = str.replace(/[ \t]+(<ref[ >]|\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, '$1');		// bez bia≥ych przed
+	str = str.replace(/[ \t]+(<ref[ >]|\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, '$1');		// bez bia≈Çych przed
 	// nowe linie przed ref w references
 	str = str.replace(/(<references>|\{\{Przypisy[\s\S]*?\|\s*przypisy\s*=|\{\{Uwagi[\s\S]*?\|\s*uwagi\s*=|\{\{Przypisy-lista[\s\S]*?\|\s*l\. kolumn\s*=\s*[0-9]+\s*\|\s*1=|\{\{Przypisy-lista[\s\S]*?\|\s*(1\s*=)|\{\{Przypisy-lista[\s\S]*?\|)((?:<ref name[^<>]+>[\s\S]*?<\/ref>\s*)+)/gi,
 		function(a, prerefs, temp_refs, refs)
@@ -542,9 +312,9 @@ wp_sk.cleanerWikiVaria = function (str)
 	);
 	// przypisy i interpunkcja
 	str = str.replace(/([,])((?:(?:<ref[\s\S]+?(?:<\/ref|\/)>)|(\{\{[Rr]\|[^}]+\}\}))+)/g, "$2$1");	// przecinek
-	str = str.replace(/((?:\s|^)[^& ]*);((?:(?:<ref[\s\S]+?(?:<\/ref|\/)>)|(\{\{[Rr]\|[^}]+\}\}))+)/g, "$1$2;");	// ∂rednik
-	str = str.replace(/([a-zA-Z±ÊÍ≥ÒÛ∂ºø°∆ £—”¶¨Ø]{5}|[()\[\]{}".'>])[.]((?:(?:<ref[\s\S]+?(?:<\/ref|\/)>)|(\{\{[Rr]\|[^}]+\}\}))+)/g, "$1$2.");	// d≥ugi wyraz lub znak specjalny
-	str = str.replace(/([a-zA-Z±ÊÍ≥ÒÛ∂ºø°∆ £—”¶¨Ø][aeiouy±Í])[.]([']*(?:(?:<ref[\s\S]+?(?:<\/ref|\/)>)|(\{\{[Rr]\|[^}]+\}\}))+)/g, "$1$2.");	// krÛtki z samog≥osk±
+	str = str.replace(/((?:\s|^)[^& ]*);((?:(?:<ref[\s\S]+?(?:<\/ref|\/)>)|(\{\{[Rr]\|[^}]+\}\}))+)/g, "$1$2;");	// ≈õrednik
+	str = str.replace(/([a-zA-ZƒÖƒáƒô≈Ç≈Ñ√≥≈õ≈∫≈ºƒÑƒÜƒò≈Å≈É√ì≈ö≈π≈ª]{5}|[()\[\]{}"‚Äù'>])[.]((?:(?:<ref[\s\S]+?(?:<\/ref|\/)>)|(\{\{[Rr]\|[^}]+\}\}))+)/g, "$1$2.");	// d≈Çugi wyraz lub znak specjalny
+	str = str.replace(/([a-zA-ZƒÖƒáƒô≈Ç≈Ñ√≥≈õ≈∫≈ºƒÑƒÜƒò≈Å≈É√ì≈ö≈π≈ª][aeiouyƒÖƒô])[.]([']*(?:(?:<ref[\s\S]+?(?:<\/ref|\/)>)|(\{\{[Rr]\|[^}]+\}\}))+)/g, "$1$2.");	// kr√≥tki z samog≈ÇoskƒÖ
 	str = str.replace(/(<\/ref>|\{\{[Rr]\|[^}]+\}\})\.\.(?=\s)/g, '$1.');  // dwukropek poziomy
 	
 	/*
@@ -552,8 +322,8 @@ wp_sk.cleanerWikiVaria = function (str)
 	str = str.replace(/< *ref *name *= *(?:"([^">\n]+)"|'([^'>\n]+)'|([^\s'"\/]+)) *\/ *>/g, function(a, name1, name2, name3) {
 		return "{{r|" + (name1||name2||name3) + "}}";
 	});
-	// ≥±czymy kolejne wywo≥ania postaci {{r}}{{r}}
-	// nie dzia≥a dla wywo≥aÒ z parametrami grupaN=
+	// ≈ÇƒÖczymy kolejne wywo≈Çania postaci {{r}}{{r}}
+	// nie dzia≈Ça dla wywo≈Ça≈Ñ z parametrami grupaN=
 	str = str.replace(/(\{\{r(\|([^|}]+))+\}\}\s*)+/g, function(refs) {
 		return refs.replace(/\}\}\s*\{\{r\|/g, '|');
 	});
@@ -561,14 +331,14 @@ wp_sk.cleanerWikiVaria = function (str)
 
 	// fakty i interpunkcja
 	str = str.replace(/([,])(\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, "$2$1");	// przecinek
-	str = str.replace(/((?:\s|^)[^& ]*);(\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, "$1$2;");	// ∂rednik
-	str = str.replace(/([a-zA-Z±ÊÍ≥ÒÛ∂ºø°∆ £—”¶¨Ø]{5}|[()\[\]{}".'>])[.](\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, "$1$2.");	// d≥ugi wyraz lub znak specjalny
-	str = str.replace(/([a-zA-Z±ÊÍ≥ÒÛ∂ºø°∆ £—”¶¨Ø][aeiouy±Í])[.](\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, "$1$2.");	// krÛtki z samog≥osk±
+	str = str.replace(/((?:\s|^)[^& ]*);(\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, "$1$2;");	// ≈õrednik
+	str = str.replace(/([a-zA-ZƒÖƒáƒô≈Ç≈Ñ√≥≈õ≈∫≈ºƒÑƒÜƒò≈Å≈É√ì≈ö≈π≈ª]{5}|[()\[\]{}"‚Äù'>])[.](\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, "$1$2.");	// d≈Çugi wyraz lub znak specjalny
+	str = str.replace(/([a-zA-ZƒÖƒáƒô≈Ç≈Ñ√≥≈õ≈∫≈ºƒÑƒÜƒò≈Å≈É√ì≈ö≈π≈ª][aeiouyƒÖƒô])[.](\{\{[Ff]akt(?:\|data=[0-9\-]+)?\}\})/g, "$1$2.");	// kr√≥tki z samog≈ÇoskƒÖ
 
 	// listy ze spacjami
 	str = str.replace(/(\n[#*:;]+)(?![ \t\n#*:;{]|if[a-z]* ?:|switch ?:|time ?:|rel2abs ?:|titleparts ?:)/g, '$1 ');
 
-	// rozwijanie linkÛw w listach
+	// rozwijanie link√≥w w listach
 	str = str.replace(/\n\*[ \t]*\[(http:\/\/[^ \n\]]+)\]/g, "\n* [$1 $1]");
 
 	// galerie fix cooked by ToSter
@@ -583,31 +353,31 @@ wp_sk.cleanerWikiVaria = function (str)
 /* =====================================================
 	Function: wp_sk.cleanerTXT(str)
 
-	Sprz±tanie nie zwi±zane bezpo∂rednio z wikisk≥adni±
+	SprzƒÖtanie nie zwiƒÖzane bezpo≈õrednio z wikisk≈ÇadniƒÖ
    ===================================================== */
 wp_sk.cleanerTXT = function (str)
 {
-	// usuwanie unikodowych znakÛw steruj±cych
+	// usuwanie unikodowych znak√≥w sterujƒÖcych
 	str = str.replace(/[\u200B\uFEFF\u200E]/g, '');
 
 	// korekty dat
-	// wystÍpuje w interwiki (hr)
-	//str = str.replace(/([0-9])\. *(stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|wrze∂nia|paºdziernika|listopada|grudnia)/g, '$1 $2')	// niepotrzebna kropka
-	str = str.replace(/([^0-9])0([0-9]) *(stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|wrze∂nia|paºdziernika|listopada|grudnia)/g, '$1$2 $3')	// niepotrzebne 0
+	// wystƒôpuje w interwiki (hr)
+	//str = str.replace(/([0-9])\. *(stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|wrze≈õnia|pa≈∫dziernika|listopada|grudnia)/g, '$1 $2')	// niepotrzebna kropka
+	str = str.replace(/([^0-9])0([0-9]) *(stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|wrze≈õnia|pa≈∫dziernika|listopada|grudnia)/g, '$1$2 $3')	// niepotrzebne 0
 
-	// poprawkowate rÛøne (kolejno∂Ê jest istotna!)
-	str = str.replace(/&deg;/g, '∞');
-	str = str.replace(/&sum;/g, '.');
-	str = str.replace(/&larr;/g, '.');
-	str = str.replace(/&rarr;/g, '.');
-	str = str.replace(/&uarr;/g, '.');
-	str = str.replace(/&darr;/g, '.');
-	str = str.replace(/&dagger;/g, '.');
-	str = str.replace(/<sup>o<\/sup>/g, '∞');
+	// poprawkowate r√≥≈ºne (kolejno≈õƒá jest istotna!)
+	str = str.replace(/&deg;/g, '¬∞');
+	str = str.replace(/&sum;/g, '‚àë');
+	str = str.replace(/&larr;/g, '‚Üê');
+	str = str.replace(/&rarr;/g, '‚Üí');
+	str = str.replace(/&uarr;/g, '‚Üë');
+	str = str.replace(/&darr;/g, '‚Üì');
+	str = str.replace(/&dagger;/g, '‚Ä†');
+	str = str.replace(/<sup>o<\/sup>/g, '¬∞');
 
-	str = str.replace(/([0-9]) (%|.|∞)(?!C)/g, '$1$2'); // bez x ∞C
-	str = str.replace(/([0-9]) (%|.|∞)(?!F)/g, '$1$2'); // bez x ∞F
-	str = str.replace(/([0-9])(∞[CF])/g, '$1 $2'); // spacja
+	str = str.replace(/([0-9]) (%|‚Ä∞|¬∞)(?!C)/g, '$1$2'); // bez x ¬∞C
+	str = str.replace(/([0-9]) (%|‚Ä∞|¬∞)(?!F)/g, '$1$2'); // bez x ¬∞F
+	str = str.replace(/([0-9])(¬∞[CF])/g, '$1 $2'); // spacja
 
 	str = str.replace(/<\/?br ?\/?>/gi, '<br />');
 
@@ -618,21 +388,22 @@ wp_sk.cleanerTXT = function (str)
 	str = str.replace(/ d\/s /g, ' ds. ');
 	str = str.replace(/ wg\. /g, ' wg ');
 
-	// sklejanie skrÛtÛw
+	// sklejanie skr√≥t√≥w
 	str = str.replace(/m\.? ?(npm|n[. ]{1,3}p[. ]{1,3}m\.?)/g, 'm n.p.m.');
 	str = str.replace(/ m\. in\./g, ' m.in.');
 	str = str.replace(/ o\. o\./g, ' o.o.');
 
-	// Sprawy wagi PaÒstwowej ;-)
-	str = str.replace(/(gmina wiejska w powiecie [a-zA-Z±ÊÍ≥ÒÛ∂ºø°∆ £—”¶¨Ø\-]+ wojewÛdztwa [a-zA-Z±ÊÍ≥ÒÛ∂ºø°∆ £—”¶¨Ø\-]+) II Rzeczpospolitej/g, '\1 II Rzeczypospolitej');
+	// Sprawy wagi Pa≈Ñstwowej ;-)
+	str = str.replace(/(gmina wiejska w powiecie [a-zA-ZƒÖƒáƒô≈Ç≈Ñ√≥≈õ≈∫≈ºƒÑƒÜƒò≈Å≈É√ì≈ö≈π≈ª\-]+ wojew√≥dztwa [a-zA-ZƒÖƒáƒô≈Ç≈Ñ√≥≈õ≈∫≈ºƒÑƒÜƒò≈Å≈É√ì≈ö≈π≈ª\-]+) II Rzeczpospolitej/g, '\1 II Rzeczypospolitej');
 
 	return str;
 }
+
 /* =====================================================
 	Function: wp_sk.cleanerMagicLinks(str)
 
-	Sprz±tanie koÒcowe magicznych linkÛw i elementÛw
-	powi±zanych - miÍdzywiki, medale dla nich i kategorie.
+	SprzƒÖtanie ko≈Ñcowe magicznych link√≥w i element√≥w
+	powiƒÖzanych - miƒôdzywiki, medale dla nich i kategorie.
    ===================================================== */
 wp_sk.cleanerMagicLinks = function (str)
 {
@@ -657,10 +428,10 @@ wp_sk.cleanerMagicLinks = function (str)
 }
 
 /* =====================================================
-	Funkcje wspomagaj±ce porz±dkowanie           {START}
+	Funkcje wspomagajƒÖce porzƒÖdkowanie           {START}
    ----------------------------------------------------- */
 //
-// Sprz±tanie infoboksÛw
+// SprzƒÖtanie infoboks√≥w
 //
 wp_sk.rFriendlyIbox = function (a,nazwa,zaw)
 {
@@ -671,21 +442,21 @@ wp_sk.rFriendlyIbox = function (a,nazwa,zaw)
 	nazwa = nazwa.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");	// trim
 
 	//
-	// escapowanie parametrÛw
+	// escapowanie parametr√≥w
 	//
-	// wewnÍtrzne szablony
+	// wewnƒôtrzne szablony
 	zaw = zaw.replace(/<<<(#+)>>>/g,'<<<#$1>>>');
 	zaw = zaw.replace(/\{\{(([^\{\}]+)?(\{\{[^\{\}]+\}\})?)*\}\}/g,function(a){ return a.replace(/\|/g,'<<<#>>>') });
-	// wewnÍtrzne linki
+	// wewnƒôtrzne linki
 	zaw = zaw.replace(/\[\[[^\]]+\]\]/g,function(a){ return a.replace(/\|/g,'<<<#>>>') });
 
 	//
-	// sprz±tanie
+	// sprzƒÖtanie
 	//
 	// del pustych
 	zaw = zaw.replace(/\|\s*(?=\|)/g, function(a) {return (a.indexOf('\n')==-1)?'':'\n'}).replace(/\|\s*$/g, "");
 	zaw = zaw.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");	// trim
-	// przeniesienie | na pocz±tek wiersza
+	// przeniesienie | na poczƒÖtek wiersza
 	zaw = '\n'+zaw+'\n';
 	zaw = zaw.replace(/\s*\|(\s*)/g, function(a, post)
 	{
@@ -708,12 +479,12 @@ wp_sk.rFriendlyIbox = function (a,nazwa,zaw)
 	zaw = zaw.replace(/<<<#>>>/g,'|').replace(/<<<#(#+)>>>/g,'<<<$1>>>');
 
 	//
-	// ZakoÒczenie
+	// Zako≈Ñczenie
 	//
 	return '{{'+nazwa.substring(0,1).toUpperCase()+nazwa.substring(1)+zaw+'}}';
 }
 //
-// Dekodowanie linkÛw
+// Dekodowanie link√≥w
 //
 wp_sk.rLinkdecode = function(a,name,anchor,end)
 {
@@ -729,21 +500,21 @@ wp_sk.rLinkdecode = function(a,name,anchor,end)
 	return a.replace(/_/g,' ');
 }
 /* -----------------------------------------------------
-	Funkcje wspomagaj±ce porz±dkowanie          {KONIEC}
+	Funkcje wspomagajƒÖce porzƒÖdkowanie          {KONIEC}
    ===================================================== */
 
 /* =====================================================
-	Klasy wspomagaj±ce porz±dkowanie             {START}
+	Klasy wspomagajƒÖce porzƒÖdkowanie             {START}
    ----------------------------------------------------- */
 /* =====================================================
 	Class: wp_sk.nowiki
 
-	Ukrywanie obszarÛw w tagach: nowiki, pre, source i math
+	Ukrywanie obszar√≥w w tagach: nowiki, pre, source i math
 
 	.hide(str)
-		ukrywanie tagÛw specjalnych wraz z ich wnÍtrzami
+		ukrywanie tag√≥w specjalnych wraz z ich wnƒôtrzami
 	.show(str)
-		przywrÛcenie ukrytych tagÛw
+		przywr√≥cenie ukrytych tag√≥w
    ===================================================== */
 //
 // object init
@@ -760,29 +531,29 @@ wp_sk.nowiki.hide = function(str)
 	str = str.replace(/<<<(#*[0-9]+)>>>/g, '<<<#$1>>>');
 
 	//
-	// w≥a∂ciwe ukrywanie
+	// w≈Ça≈õciwe ukrywanie
 	var re = /<(nowiki|pre|source|math|includeonly|noinclude)(|[ \t\n][^>]*)>/g;
 	var m;
 	wp_sk.nowiki.tags = new Array();
-	// pÛki znaleziono tag otwieraj±cy
+	// p√≥ki znaleziono tag otwierajƒÖcy
 	for (var t_i = 0; (m=re.exec(str))!=null; t_i++)
 	{
 		var start, end, re_end;
 
 		start = m.index;
 
-		// odszukanie koÒca: </tag([ \t\n]*)>
+		// odszukanie ko≈Ñca: </tag([ \t\n]*)>
 		re_end = new RegExp("</"+m[1]+"([ \t\n]*)>", "g")
 		m = re_end.exec(str.substring(re.lastIndex));
 		end = (m==null) ? str.length : re.lastIndex+re_end.lastIndex;
 
-		// dopisanie do tablicy zawarto∂ci
+		// dopisanie do tablicy zawarto≈õci
 		wp_sk.nowiki.tags[t_i] = str.substring(start,end);
 
-		// zamiana ca≥o∂ci znalezionego obszaru na: <<<indeks>>>
+		// zamiana ca≈Ço≈õci znalezionego obszaru na: <<<indeks>>>
 		str = str.substring(0,start)+"<<<"+t_i+">>>"+str.substring(end);
 
-		// szukanie od startu, bo czÍ∂Ê znakÛw juø usuniÍto
+		// szukanie od startu, bo czƒô≈õƒá znak√≥w ju≈º usuniƒôto
 		re.lastIndex = start;
 	}
 
@@ -807,26 +578,26 @@ wp_sk.nowiki.show = function(str)
 /* =====================================================
 	Class: wp_sk.cat
 
-	Zbieranie, porz±dkowanie i wstawianie kategorii
+	Zbieranie, porzƒÖdkowanie i wstawianie kategorii
 
 	.gather(str)
 		zbieranie kategorii ze str ze zwrotem nowego str
 	.output(a)
-		porz±dkuje i zwraca wikitekst z kategoriami;
+		porzƒÖdkuje i zwraca wikitekst z kategoriami;
 		parametr a jest nieistotny
 	.getDefSort()
-		zwraca wyraøenie regularne dla defaultsort
+		zwraca wyra≈ºenie regularne dla defaultsort
 	.newDefSort()
 		szukanie nowego (najpopularniejszego) defaultsort
 
 	.art_def_sort
 		znaleziony w artykule defaultsort
 	.def_sort
-		wybrany dla artyku≥u defsort
+		wybrany dla artyku≈Çu defsort
 	.arr
 		tablica z kategoriami ('nazwa|sorotwanie')
 	.arr_i
-		indeks pomocniczy, a takøe liczba elementÛw w arr
+		indeks pomocniczy, a tak≈ºe liczba element√≥w w arr
    ===================================================== */
 // object init
 wp_sk.cat = new Object();
@@ -836,7 +607,7 @@ wp_sk.cat = new Object();
 wp_sk.cat.gather = function(str)
 {
 	//
-	// zbiÛrka i kasowanie
+	// zbi√≥rka i kasowanie
 	wp_sk.cat.arr = new Array();
 	wp_sk.cat.arr_i = 0;
 	wp_sk.cat.art_def_sort = '';
@@ -848,7 +619,7 @@ wp_sk.cat.gather = function(str)
 }
 function PolishCollator() {
 	// Source: https://pl.wiktionary.org/wiki/MediaWiki:Gadget-sk.js
-	var orderArray = ['a‰', '±', '.', '·', 'b', 'c', 'Ê', 'd', 'e', 'Í', 'f', 'g', 'h', 'i', 'j', 'k', 'l', '≥', 'm', 'n', 'oˆ', 'Û', 'p', 'q', 'r', 's', '∂', 't', 'u¸', 'v', 'w', 'x', 'y', 'z', 'º', 'ø'];
+	var orderArray = ['a√§', 'ƒÖ', '√£', '√°', 'b', 'c', 'ƒá', 'd', 'e', 'ƒô', 'f', 'g', 'h', 'i', 'j', 'k', 'l', '≈Ç', 'm', 'n', 'o√∂', '√≥', 'p', 'q', 'r', 's', '≈õ', 't', 'u√º', 'v', 'w', 'x', 'y', 'z', '≈∫', '≈º'];
 	var orderHash = {};
 
 	// Prepare orderHash
@@ -903,7 +674,7 @@ wp_sk.cat.output = function (a)
 	var str = mw.config.get( 'wp-sk-categories-head', '\n' );
 
 	//
-	// sortowanie (je∂li dostÍpna odpowiednia funkcja)
+	// sortowanie (je≈õli dostƒôpna odpowiednia funkcja)
 	if ( mw.config.get( 'wp-sk-sort-categories', false ) ) {
 		var collator = new PolishCollator();
 		wp_sk.cat.arr.sort( function( a, b ) {
@@ -916,7 +687,7 @@ wp_sk.cat.output = function (a)
 	var reDefSort = wp_sk.cat.getDefSort();
 
 	//
-	// zbÍdne spacje
+	// zbƒôdne spacje
 	for (var i=0; i<wp_sk.cat.arr_i; i++)
 	{
 		if (/^.+\| $/.test(wp_sk.cat.arr[i]) == false)
@@ -926,13 +697,13 @@ wp_sk.cat.output = function (a)
 	}
 
 	//
-	// "wy∂wietlanie" kategorii
-	if (reDefSort!="") // je∂li jest jaki∂ defaultsort
+	// "wy≈õwietlanie" kategorii
+	if (reDefSort!="") // je≈õli jest jaki≈õ defaultsort
 	{
 		str += '\n{{DEFAULTSORT:'+wp_sk.cat.def_sort+'}}';
 		for (var i=0; i<wp_sk.cat.arr_i; i++)
 		{
-			// je∂li nie by≥o defaultsort i puste, to dodajemy domy∂lne, øeby nie psuÊ
+			// je≈õli nie by≈Ço defaultsort i puste, to dodajemy domy≈õlne, ≈ºeby nie psuƒá
 			if (!wp_sk.cat.art_def_sort.length && wp_sk.cat.arr[i].indexOf('|')==-1)
 			{
 				str += '\n[[Kategoria:'+wp_sk.cat.arr[i]+'|{{PAGENAME}}]]';
@@ -965,7 +736,7 @@ wp_sk.cat.getDefSort = function ()
 	{
 		wp_sk.cat.def_sort = wp_sk.cat.art_def_sort;
 	}
-	// szukanie nowego je∂li liczba kategorii jest wiÍksza od 1
+	// szukanie nowego je≈õli liczba kategorii jest wiƒôksza od 1
 	else if (wp_sk.cat.arr_i>1)
 	{
 		wp_sk.cat.def_sort = wp_sk.cat.newDefSort();
@@ -974,7 +745,7 @@ wp_sk.cat.getDefSort = function ()
 	var reDefSort="";
 	if (wp_sk.cat.def_sort!="")
 	{
-		// zamiana na regexp (øeby unikn±Ê czÍ∂ciowych dopasowaÒ)
+		// zamiana na regexp (≈ºeby uniknƒÖƒá czƒô≈õciowych dopasowa≈Ñ)
 		reDefSort = wp_sk.cat.def_sort.replace(/([(){}\[\]\\|.*?$^])/g, '\\$1');
 		reDefSort = new RegExp('\\|'+reDefSort+'$');
 	}
@@ -989,38 +760,38 @@ wp_sk.cat.newDefSort = function ()
 	var def_sort = '';
 
 	//
-	// sprawdzenie, czy wybrano jaki∂ klucz sortowania w kategoriach
+	// sprawdzenie, czy wybrano jaki≈õ klucz sortowania w kategoriach
 	var sort_i;
 	for (sort_i=0; sort_i<wp_sk.cat.arr_i && wp_sk.cat.arr[sort_i].indexOf('|')<0; sort_i++);
 
 	//
 	// liczenie kategorii z kluczami
-	var total_sort_num = 0;	// ca≥kowita liczba kluczy sortowania
-	for (var i = sort_i; i<wp_sk.cat.arr_i; i++)	// zaczynamy od juø znalezionego
+	var total_sort_num = 0;	// ca≈Çkowita liczba kluczy sortowania
+	for (var i = sort_i; i<wp_sk.cat.arr_i; i++)	// zaczynamy od ju≈º znalezionego
 	{
 		if (wp_sk.cat.arr[i].indexOf('|')>0)
 			total_sort_num++;
 	}
 	//
-	// je∂li ma≥o kluczy (by≥oby duøo {{PAGENAME}}), to bez domy∂lnego klucza
+	// je≈õli ma≈Ço kluczy (by≈Çoby du≈ºo {{PAGENAME}}), to bez domy≈õlnego klucza
 	if (total_sort_num*2<wp_sk.cat.arr_i) //<50%
 	{
 		return '';
 	}
 
 	//
-	// je∂li wybrano jakie∂ sorotwanie, to szukamy nowego klucza (wg popularno∂ci)
+	// je≈õli wybrano jakie≈õ sorotwanie, to szukamy nowego klucza (wg popularno≈õci)
 	if (sort_i!=wp_sk.cat.arr_i)
 	{
 		//
 		//
 		var def_sort_num = 0;
 		var def_sort_forbiden = ['!', ' ', '*', '+'];
-		for (var i = sort_i; i<wp_sk.cat.arr_i; i++)	// zaczynamy od juø znalezionego
+		for (var i = sort_i; i<wp_sk.cat.arr_i; i++)	// zaczynamy od ju≈º znalezionego
 		{
 			var j, tmp_def_sort, tmp_def_sort_re, tmp_def_sort_num;
 
-			// dochodzimy do klucza kandyduj±cego
+			// dochodzimy do klucza kandydujƒÖcego
 			for (j = i; j<wp_sk.cat.arr_i && wp_sk.cat.arr[j].indexOf('|')<0; j++);
 			if (j==wp_sk.cat.arr_i)
 				break;
@@ -1028,15 +799,15 @@ wp_sk.cat.newDefSort = function ()
 
 			// klucz
 			tmp_def_sort = wp_sk.cat.arr[j].substr(wp_sk.cat.arr[j].indexOf('|')+1);
-			if (def_sort == tmp_def_sort)	// juø by≥
+			if (def_sort == tmp_def_sort)	// ju≈º by≈Ç
 			{
 				continue;
 			}
-			// zamiana na regexp (øeby unikn±Ê czÍ∂ciowych dopasowaÒ)
-			tmp_def_sort_re = tmp_def_sort.replace(/([(){}\[\]\\|.*?$^])/g, '\\$1');	// escapowanie znakÛw regexpowych
+			// zamiana na regexp (≈ºeby uniknƒÖƒá czƒô≈õciowych dopasowa≈Ñ)
+			tmp_def_sort_re = tmp_def_sort.replace(/([(){}\[\]\\|.*?$^])/g, '\\$1');	// escapowanie znak√≥w regexpowych
 			tmp_def_sort_re = new RegExp('\\|'+tmp_def_sort_re+'$');
 
-			// liczenie wyst±pieÒ
+			// liczenie wystƒÖpie≈Ñ
 			var tmp_def_sort_num=1;
 			for (j++; j<wp_sk.cat.arr_i; j++)
 			{
@@ -1046,7 +817,7 @@ wp_sk.cat.newDefSort = function ()
 				}
 			}
 
-			// kandydyj±cy = nowy?
+			// kandydyjƒÖcy = nowy?
 			if (tmp_def_sort_num<2 || def_sort_num > tmp_def_sort_num)
 			{
 				continue;
@@ -1065,24 +836,24 @@ wp_sk.cat.newDefSort = function ()
 /* =====================================================
 	Class: wp_sk.iWiki
 
-	Zbieranie, porz±dkowanie i wstawianie interwiki
+	Zbieranie, porzƒÖdkowanie i wstawianie interwiki
 
 	.gather(str)
 		zbieranie interwiki ze str ze zwrotem nowego str
 	.output(a)
-		porz±dkuje i zwraca wikitekst z interwiki;
+		porzƒÖdkuje i zwraca wikitekst z interwiki;
 		parametr a jest nieistotny
 	.comp(a, b)
-		porÛwnuje a z b i zwraca warto∂Ê odpowiedni±
+		por√≥wnuje a z b i zwraca warto≈õƒá odpowiedniƒÖ
 		dla funkcji sort()
 
 	.order
-		tablica z jÍzykami ustawionymi wg kolejno∂ci
-		wg ktÛrej maj± byÊ sortowane interwiki
+		tablica z jƒôzykami ustawionymi wg kolejno≈õci
+		wg kt√≥rej majƒÖ byƒá sortowane interwiki
 	.arr
-		tablica z interwiki ([jÍzyk, artyku≥])
+		tablica z interwiki ([jƒôzyk, artyku≈Ç])
 	.arr_i
-		indeks pomocniczy, a takøe liczba elementÛw w arr
+		indeks pomocniczy, a tak≈ºe liczba element√≥w w arr
    ===================================================== */
 // object init
 wp_sk.iWiki = new Object();
@@ -1187,19 +958,19 @@ wp_sk.iWiki.order = [
 /* =====================================================
 	Class: wp_sk.iWikiFA | iWikiGA | iWikiFL
 
-	Zbieranie, porz±dkowanie i wstawianie interwikowych
-	szablonÛw Featured Articles
+	Zbieranie, porzƒÖdkowanie i wstawianie interwikowych
+	szablon√≥w Featured Articles
 
 	.gather(str)
-		zbieranie szablonÛw FA ze str ze zwrotem nowego str
+		zbieranie szablon√≥w FA ze str ze zwrotem nowego str
 	.output(a)
-		porz±dkuje i zwraca wikitekst z szablonami FA;
+		porzƒÖdkuje i zwraca wikitekst z szablonami FA;
 		parametr a jest nieistotny
 
 	.arr
-		tablica z szablonami FA ([jÍzyk, artyku≥])
+		tablica z szablonami FA ([jƒôzyk, artyku≈Ç])
 	.arr_i
-		indeks pomocniczy, a takøe liczba elementÛw w arr
+		indeks pomocniczy, a tak≈ºe liczba element√≥w w arr
    ===================================================== */
 // object init
 wp_sk.iWikiFA = {
@@ -1247,7 +1018,7 @@ wp_sk.iWikiFA.output = function (a)
 	}
 	var str = '\n';
 
-	this.arr.sort(wp_sk.iWiki.comp); // alfabetycznie wg kodu literowego // funkcja wspÛlna wp_sk.iWiki
+	this.arr.sort(wp_sk.iWiki.comp); // alfabetycznie wg kodu literowego // funkcja wsp√≥lna wp_sk.iWiki
 	for (var i=0; i<this.arr_i; i++)
 	{
 		str += '\n{{'+this.out_szablon+'|'+this.arr[i]+'}}';
@@ -1280,243 +1051,15 @@ wp_sk.iWikiFL = {
 wp_sk.iWikiFL.gather = wp_sk.iWikiFA.gather;
 wp_sk.iWikiFL.output = wp_sk.iWikiFA.output;
 
-/* =====================================================
-	Class: wp_sk.redir
 
-	Poprawianie redrictÛw. Przynajmniej na razie bazuje
-	na podgl±dzie artyku≥u, w ktÛrym redirecty s± oznaczone
-	specjaln± klas± (mw-redirect).
-
-	.init()
-		inicjowanie poprawek przez wstawienie ikonki przetwarzania
-		wyszukanie redirectÛw i wys≥anie wstÍpnego ø±dania
-		do serwera o rozwiniÍcie redirectÛw
-	.resp(res)
-		funkcja przyjmuj±ca odpowiedzieÊ (res) z serwera
-		i przetwarzaj±ca j± na tabelk± rozwiniÍÊ redirectÛw
-
-	.arr	- tabela rozwiniÍÊ redirectÛw wykorzystywana wewnÍtrznie
-	.arr_i	- indeks uøywany przy tworzeniu tabeli
-	.url	- url wstÍpnego zapytania, potrzebny w razie
-			konieczno∂ci kontynuowania ø±daÒ (wymÛg API)
-   ===================================================== */
-//
-// object init
-//
-wp_sk.redir = new Object();
-
-wp_sk.redir.linkPrefix = document.location.protocol + "//" + document.location.hostname + mw.config.get( 'wgArticlePath' ).replace( '$1', '' );
-
-wp_sk.redir.extractTitle = function( link ) {
-	if ( link.substring( 0, this.linkPrefix.length ) != this.linkPrefix ) {
-		return null;
-	}
-
-	return decodeURIComponent( link.substring( this.linkPrefix.length ).replace( /_/g, ' ' ) ).replace( /#.*$/, '' );
-}
-
-//
-// .init()
-//
-wp_sk.redir.init = function()
-{
-	wp_sk.redir.base_url = mw.util.wikiScript('api') + '?action=query&redirects&format=json&titles=';
-
-	// ograniczenie czasowe, ale tylko w podgl±dzie (øeby nie zamÍczyÊ serwerÛw)
-	if (wgAction=='submit')
-	{
-		if (document.cookie.indexOf('wpsk_redir_time_disable=1')!=-1)
-		{
-			return;
-		}
-		else
-		{
-			var d = new Date();
-			d = new Date(d.getTime()+300000); //+5min (il. sekund * 1000)
-			document.cookie = "wpsk_redir_time_disable=1; path=/; expires=" + d.toGMTString();
-		}
-	}
-
-	var elWikiBody = document.getElementById('wikiPreview');
-	if (elWikiBody)
-	{
-		//
-		// szukanie przekierowaÒ
-		wp_sk.redir.urls = new Array();
-		wp_sk.redir.urls[0] = new Array();
-		var url_i = url_j = 0;
-		var as = jQuery("a.mw-redirect");
-		for (var i=0; i<as.length; i++)
-		{
-			var tmp = this.extractTitle( as[i].href );
-			if ( tmp == null ) {
-				continue;
-			}
-			// new url?
-			var isnew=true;
-			for (var ui=0; ui<=url_i; ui++)
-			{
-				for (var uj=0; uj<url_j; uj++)
-				{
-					if (wp_sk.redir.urls[ui][uj]==tmp)
-					{
-						isnew=false;
-						break;
-					}
-				}
-				if (!isnew)
-					break;
-			}
-			// add to array
-			if (isnew)
-			{
-				wp_sk.redir.urls[url_i][url_j++] = tmp;
-				if (url_j>=50)	// ograniczenie API
-				{
-					if (url_i>=4)	// max (4+1)x50 linkÛw
-					{
-						break;
-					}
-					url_j = 0;
-					wp_sk.redir.urls[++url_i] = new Array();
-				}
-			}
-		}
-		//
-		// ostateczne przygotowanie i wysy≥anie ø±dania
-		if (wp_sk.redir.urls[0].length>0)
-		{
-			var $notice = jQuery('<div id="wp-sk-redir-notice">Sprawdzanie linkÛw do przekierowaÒ...</div>');
-			jQuery('#wpTextbox1').before($notice);
-
-			// na znalezione redirecty
-			wp_sk.redir.arr = new Array();
-			wp_sk.redir.arr_i = 0;
-
-			// przygotowanie pierwszej porcji
-			wp_sk.redir.urls_i = 0;
-			var url = wp_sk.redir.urls[wp_sk.redir.urls_i].join('|');
-			wp_sk.redir.url = wp_sk.redir.base_url+url;
-			wp_sk.redir.full_prev_url = wp_sk.redir.url;
-			//wp_sk.debug('<h2>['+wp_sk.redir.urls_i+']['+wp_sk.redir.urls[wp_sk.redir.urls_i].length+']</h2>');
-			// run
-			var that = this;
-			jQuery.getJSON( wp_sk.redir.url, null, function( result ) {
-				that.resp( result );
-			} );
-		}
-	}
-}
-
-//
-// .resp(res)
-//
-wp_sk.redir.resp = function (jres)
-{
-	var that = this;
-
-	// zbiÛrka t≥umaczenia redirectÛw
-	var txtescape = /([\\^\$\*\+\?\.\(\)\[\]\{\}\:\=\!\|\,\-])/g;
-	for (var r in jres.query.redirects)
-	{
-		r = jres.query.redirects[r];
-		wp_sk.redir.arr[wp_sk.redir.arr_i++] = {
-			'rdir' : r.from,
-			'art' : r.to
-		}
-		//wp_sk.debug('['+(wp_sk.redir.arr_i-1)+']rdir:'+r.from+'<br />art:'+r.to);
-	}
-	// kontynuacja?
-	if (jres['query-continue']!=null)
-	{
-		var continue_url = wp_sk.redir.url + '&plcontinue='+encodeURIComponent(jres['query-continue'].links.plcontinue);
-		if (wp_sk.redir.full_prev_url != continue_url)	// <s>api</s> potential bug workaround
-		{
-			wp_sk.redir.full_prev_url = continue_url;
-			jQuery.getJSON( continue_url, null, function( result ) {
-				that.resp( result );
-			} );
-			return;
-		}
-		else
-		{
-			//wp_sk.debug('<p style="font-weight:bold;font-size:200%">Warning! Query continue loop.</p>');
-		}
-	}
-	// kolejna porcja linkÛw
-	else if (wp_sk.redir.urls_i < wp_sk.redir.urls.length-1)
-	{
-		var url = wp_sk.redir.urls[++wp_sk.redir.urls_i].join('|');
-		wp_sk.redir.url = wp_sk.redir.base_url+url;
-		wp_sk.redir.full_prev_url = wp_sk.redir.url;
-		//wp_sk.debug('<h2>['+wp_sk.redir.urls_i+']['+wp_sk.redir.urls[wp_sk.redir.urls_i].length+']</h2>');
-		jQuery.getJSON( wp_sk.redir.url, null, function( result ) {
-			that.resp( result );
-		} );
-		return;
-	}
-
-	/*
-	// debug - start
-	var str;
-	// szukane
-	str = ''
-	for (var i=0;i<wp_sk.redir.urls.length;i++)
-		for (var j=0;j<wp_sk.redir.urls[i].length;j++)
-			str += '\nwp.urls['+i+']['+j+']='+ wp_sk.redir.urls[i][j]
-	;
-	wp_sk.debug('<textarea>'+str+'</textarea>');
-
-	// znalezione
-	str = ''
-	for (var i=0;i<wp_sk.redir.arr.length;i++)
-		str += '\nwp.rdirs['+i+']='+ wp_sk.redir.arr[i].rdir
-	;
-	wp_sk.debug('<textarea>'+str+'</textarea>');
-	// debug - end
-	*/
-
-	// przygotowanie funkcji podmiany redirectÛw
-	wp_sk.cleanerLinks_orig = wp_sk.cleanerLinks;
-	wp_sk.cleanerLinks = function (str)
-	{
-		var reTxtEscape = /([\\^\$\*\+\?\.\(\)\[\]\{\}\:\=\!\|\,\-])/g;
-		for (var page in wp_sk.redir.arr)
-		{
-			page = wp_sk.redir.arr[page];
-			var re = page.rdir.replace(reTxtEscape,'\\$1');
-			if (re.search(/^[a-zøÛ≥ÊÍ∂±ºÒ]/i)==0)
-			{
-				re = '['+ re[0].toLowerCase() + re[0].toUpperCase() +']'
-					+ re.substr(1);
-			}
-			var re = new RegExp('\\[\\[('+re+')(\\||\\]\\])', 'g');
-			str = str.replace(re, function (a, art, end)
-			{
-				return '[['+ page.art + (end=='|' ? '|' : '|'+art+']]');
-			});
-		}
-
-		return wp_sk.cleanerLinks_orig(str);	// dopiero teraz, øeby poprawiaÊ takøe zmienione linki
-	}
-
-	jQuery( "#wp-sk-redir-notice" ).remove();
-
-	var el = document.getElementById( 'wp_sk_img_btn' );
-	if ( toolbarGadget.wikieditor ) {
-		el.src = '//commons.wikimedia.org/w/thumb.php?f=Broom%20icon%20R.svg&w=22';
-	} else {
-		el.src = '//upload.wikimedia.org/wikipedia/commons/3/31/Button_broom_R.png';
-	}
-}
 /* -----------------------------------------------------
-	Klasy wspomagaj±ce porz±dkowanie            {KONIEC}
+	Klasy wspomagajƒÖce porzƒÖdkowanie            {KONIEC}
    ===================================================== */
 
 /* =====================================================
 	Function: Array.prototype.indexOf(elt)
 
-	DostÍpna normalnie: Gecko>1.8b2
+	Dostƒôpna normalnie: Gecko>1.8b2
    ===================================================== */
 if (!Array.prototype.indexOf)
 {
@@ -1538,27 +1081,119 @@ if (!Array.prototype.indexOf)
 	};
 }
 
-wp_sk.sz_redirs_tab = {};
-
 /* =====================================================
-	OnLoad
+	ujednolicanie szablon√≥w wg:
+	http://pl.wikipedia.org/wiki/Wikiprojekt:Sprz%C4%85tanie_szablon%C3%B3w/redirecty#linkowane
    ===================================================== */
-
-
-jQuery( document ).ready( function() {
-	if ( mw.config.get( 'wgAction' ) != 'submit' && mw.config.get( 'wgAction' ) != 'edit' ) {
-		return;
-	}
-
-	if ( wp_sk_show_as_button ) {
-		wp_sk.button();
-	}
-
-	// kto∂ moøe mieÊ ustawiony podgl±d od razu przy edycji - wÛwczas dzia≥a od razu
-	if ( wp_sk_redir_enabled ) {
-		wp_sk.redir.init();
-	}
-} );
-
-// </nowiki>
-
+/*
+! bez  'nobots' : 'Bots',
+	re_obj.s = new Array(/(?:^|\n)#[ {]+noredirect\|Szablon:([^}]+)[^\[]+[\[]+Szablon:([^\]]+).+/g, /\n#.+/g);
+	re_obj.r = new Array(function(a,from,to) {if (from=='Nobots') {return '';} else return "\n\t'"+from.toLowerCase().replace('\\','\\\\').replace("'","\\'")+"' : '"+to.replace('\\','\\\\').replace("'","\\'")+"',";}, '');
+*/ // 2011-08-11
+wp_sk.sz_redirs_tab = {
+	'!w' : '!wrap',
+	'+-' : '¬±',
+	'-' : 'Clear',
+	'@' : 'E-mail',
+	'aktorka erotyczna infobox' : 'Aktor erotyczny infobox',
+	'animanga infobox/footer' : 'Animanga infobox/Stopka',
+	'animanga infobox/header' : 'Animanga infobox/Nag≈Ç√≥wek',
+	'animanga infobox/header2' : 'Animanga infobox/Nag≈Ç√≥wek2',
+	'bez zmian' : 'Stagnacja',
+	'bezpodpisu' : 'Podpisuj',
+	'braklicencji' : 'Brak licencji',
+	'brakopisu' : 'Brak licencji',
+	'bull' : '‚Ä¢',
+	'bullet' : '‚Ä¢',
+	'chem/disp0aa' : 'Chem/disp0A0',
+	'coord' : 'Koordynaty',
+	'cytuj czasopismo' : 'Cytuj pismo',
+	'dwinfoautora' : 'DWQ',
+	'dead link' : 'Martwy link',
+	'disambigp' : 'Przekierowanie',
+	'dopracowania' : 'Dopracowaƒá',
+	'done' : 'Zrobione',
+	'dot' : '¬∑',
+	'dp' : 'Dodaj pozwolenie',
+	'dyskusjapodpis' : 'Podpisuj',
+	'ek' : 'ek',
+	'edit' : 'Edytuj',
+	'ekspresowe kasowanko' : 'Ek',
+	'fakt/d' : 'Fd',
+	'fb r2 header' : 'Fb r header',
+	'formu≈Ça 1/oznaczenia' : 'Sporty motorowe/Oznaczenia',
+	'fs end' : 'Sk≈Çad pi≈Çkarski koniec',
+	'fs mid' : 'Sk≈Çad pi≈Çkarski ≈õrodek',
+	'fs player' : 'Sk≈Çad pi≈Çkarski',
+	'fs start' : 'Sk≈Çad pi≈Çkarski start',
+	'glowny' : 'G≈Ç√≥wny artyku≈Ç',
+	'gmedal' : 'Ilustracja medalowa',
+	'icd-10' : 'ICD10',
+	'icd-9' : 'ICD9',
+	'icd-o' : 'ICDO',
+	'legend' : 'Legenda',
+	'mapa lokalizacyjna/sco' : 'Mapa lokalizacyjna/SCT',
+	'mapa lokalizacyjna/usa-hi' : 'Mapa lokalizacyjna/US-HI',
+	'mapa lokalizacyjna/wyspy kanaryjskie' : 'Mapa lokalizacyjna/ES-CN',
+	'mapa lokalizacyjna/≈õwiat polityczna' : 'Mapa lokalizacyjna/≈öwiat',
+	'mediavideo' : 'Wideo',
+	'middot' : '¬∑',
+	'mistrzowie olimpijscy w pi≈Çce no≈ºnej' : 'Mistrzowie olimpijscy w pi≈Çce no≈ºnej mƒô≈ºczyzn',
+	'multilang' : 'Lang',
+	'nor' : 'Tw√≥rczo≈õƒá w≈Çasna',
+	'nieaktualne' : 'Aktualizacja',
+	'nogmedal' : 'Ilustracji odebrano medal',
+	'nowa linia' : 'clear',
+	'odp' : 'Open Directory Project',
+	'og' : 'Dodaj licencjƒô',
+	'or' : 'Tw√≥rczo≈õƒá w≈Çasna',
+	'osw' : 'Ostatnie stabilne wydanie',
+	'otw' : 'Ostatnie testowe wydanie',
+	'opisujgrafiki' : 'Dodaj licencjƒô',
+	'poczsdu' : 'DNU',
+	'poczsduinfo' : 'DNUinfo',
+	'poczsduplus' : 'poczSdUplus',
+	'poczsdu' : 'DNU',
+	'poczekalnia' : 'DNU',
+	'poprawiƒá' : 'Dopracowaƒá',
+	'projektpoczsdu' : 'DNUinfo',
+	'rpr' : 'Reprezentant pi≈Çki rƒôcznej',
+	'sduinfo' : 'SDUinformacja',
+	'sduplus' : 'SdUplus',
+	'seealso' : 'Zobacz te≈º',
+	'symbol' : 'PD-symbol',
+	'testad' : 'Spam',
+	'testki' : 'TestK',
+	'testn' : 'Test3',
+	'testnie' : 'TestG',
+	'testp' : 'Test3',
+	'testpov' : 'TestPOV0',
+	'testspam' : 'Spam',
+	'testw' : 'Test2',
+	'testlink0' : 'Testlink',
+	'test≈º' : 'TestG',
+	'topopraw' : 'To popraw',
+	'unk' : 'Unknown',
+	'urlop' : 'Odpoczynek',
+	'usu≈Ñ' : 'Ek',
+	'w' : 'wrap',
+	'wedycji' : 'W edycji',
+	'wedycji2' : 'W edycji 2',
+	'wiadomo≈õci' : 'Aktualno≈õci',
+	'wikiquote' : 'Wikicytaty',
+	'wikisource' : 'Wiki≈∫r√≥d≈Ça',
+	'wikisource-cat' : 'Wiki≈∫r√≥d≈Ça kat',
+	'wikisource-krotki' : 'Wiki≈∫r√≥d≈Ça kr√≥tki',
+	'wikisource autor' : 'Wiki≈∫r√≥d≈Ça autor',
+	'witaj-en' : 'Welcome',
+	'witaj-fr' : 'Bienvenue',
+	'witajip' : 'Anonim',
+	'zasada w jednym zdaniu' : 'W skr√≥cie',
+	'zdjƒôcie tyg' : 'Ilustracja na medal',
+	'zzw' : 'Zgodnie z WikietykietƒÖ',
+	'\\w' : '\\wrap',
+	'¬∑w' : '¬∑wrap',
+	'≈õwiƒôta infobox' : '≈öwiƒôty infobox',
+	'‚Äìw' : '‚Äìwrap',
+	'‚Ä¢w' : '‚Ä¢wrap'
+};

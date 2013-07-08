@@ -20,11 +20,14 @@ def sk(text):
 		print 'MediaWiki:Gadget-sk.js IS OUT OF DATE'
 	if Page(plwiki, 'MediaWiki:Gadget-sk-local.js').getVersionHistory()[0][1] != js_local_date:
 		print 'MediaWiki:Gadget-sk-local.js IS OUT OF DATE'
-
+# read js code...
+	f = open('sk.js', 'r')
+	js_code = f.read().decode('utf-8')
+	f.close()
+# ... and compile it
+	js_exec = execjs.compile(js_code)
 # actual check
-	return text
-		
-
+	return js_exec.call("wp_sk.cleaner", text)
 
 
 print sk('[[Kto%C5%9B_jaki%C5%9B#co.C5.9B|...]]')
