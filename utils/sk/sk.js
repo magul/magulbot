@@ -1,3 +1,4 @@
+// <nowiki>
 /* ------------------------------------------------------------------------ *\
     Moduł sprzątania kodu
 
@@ -18,10 +19,104 @@
 	* Wikipedysta:Beau - za inspiracje i poprawki
 \* ------------------------------------------------------------------------ */
 
+//
+// Moduły zewnętrzne dla projektów siostrzanych
+//
+if ( ( typeof sel_t ) !== 'object' ) {
+	mw.loader.load( '//pl.wikipedia.org/w/index.php?action=raw&ctype=text/javascript&title=MediaWiki:Gadget-sel_t.js' );
+}
+
 /* =====================================================
 	Object Init
    ===================================================== */
-wp_sk = new Object();
+
+if ( typeof( wp_sk_show_as_button ) === 'undefined' ) {
+	window.wp_sk_show_as_button = true;
+}
+if ( typeof( wp_sk_redir_enabled ) === 'undefined' ) {
+	window.wp_sk_redir_enabled = false;
+}
+
+if (window.wp_sk)
+{
+	alert('Błąd krytyczny - konflikt nazw!\n\nJeden ze skryptów używa już nazwy wp_sk jako zmienną globalną.');
+}
+window.wp_sk = new Object();
+wp_sk.version = '2.7.31a';
+
+/* =====================================================
+	Function: wp_sk.debug(htxt)
+
+	Wyświetlenie komunikatu html jeśli debug aktywny
+   ===================================================== */
+wp_sk.debug = function (htxt)
+{
+	if (typeof wp_sk_debug_enabled!='undefined' && wp_sk_debug_enabled && typeof nux_debug=='function')
+	{
+		nux_debug(htxt);
+	}
+}
+
+/* =====================================================
+	Function: wp_sk.button()
+
+	Dodaje przycisk sprzątania
+   ===================================================== */
+wp_sk.button = function() {
+	var that = this;
+	mw.loader.using( "ext.gadget.lib-toolbar", function() {
+		toolbarGadget.addButton( {
+			title: 'Sprzątanie kodu (wer. ' + that.version + ')',
+			alt: 'SK',
+			id: 'wp_sk_img_btn',
+			oldIcon: '//upload.wikimedia.org/wikipedia/commons/2/2e/Button_broom.png',
+			newIcon: '//commons.wikimedia.org/w/thumb.php?f=Broom%20icon.svg&w=22',
+			onclick: function() {
+				that.cleanup( document.getElementById( 'wpTextbox1' ) );
+			}
+		} );
+	} );
+}
+
+/* =====================================================
+	Function: wp_sk.warning(input)
+
+	Dodaje ostrzeżenie i likwiduje je
+	po wciśnięciu odpowiedniego przycisku
+   ===================================================== */
+wp_sk.warning = function() {
+	var $summary = jQuery( '#wpSummary' );
+	if ( this.nochanges ) {
+		// kolorowanka, gdy bez zmian
+		$summary.css( 'border', '2px solid #696' );
+	} else if ( mw.config.get( 'wgArticleId' ) > 0 ) {
+		$summary.css( 'border', '' );
+
+		var text = $summary.val();
+
+		var summary1 = 'po czyszczeniu kodu przejrzyj wykonane zmiany!';
+		var summary2 = mw.config.get( 'wp-sk-summary', '[[WP:SK]]' );
+
+		if ( text.indexOf( summary1 ) > -1 || text.indexOf( summary2 ) > -1 ) {
+			// opis już jest, nie potrzeba następnego
+			return;
+		}
+
+		if ( text != '' ) {
+			text += ', ';
+		}
+		text += summary1;
+		$summary.val( text );
+		$summary.addClass( 'summaryWarning' );
+
+		var $diff = jQuery( '#wpDiff' );
+		$diff.addClass( 'summaryWarning' );
+		$diff.click( function() {
+			$summary.val( $summary.val().replace( summary1, summary2 ) );
+		} );
+	}
+}
+
 
 /* =====================================================
 	Function: wp_sk.cleanup(input)
@@ -29,9 +124,17 @@ wp_sk = new Object();
 	Główna funkcja inicjująca i wywołująca funkcję
 	czyszczącą
    ===================================================== */
-wp_sk.cleanup = function (str)
+wp_sk.cleanup = function (input)
 {
-	
+	// default input
+	if (!input)
+	{
+		input = document.getElementById('wpTextbox1')
+	}
+	//
+	// Pobierz zaznaczony fragment (całość jeśli nic nie zaznaczone)
+	//
+	var str = sel_t.getSelStr(input, true);
 	// OMG - IE & Opera fix
 	str = str.replace(/\r\n/g, '\n');
 
@@ -39,13 +142,21 @@ wp_sk.cleanup = function (str)
 	// Wywołanie czyszciciela
 	//
 	str = str.replace(/\n+$/,''); // bez końcowych enterów
+	var str_pre = str;
 	str = wp_sk.cleaner(str);
-	
+	wp_sk.nochanges = (str==str_pre);
+
 	//
 	// zapisanie zmian
 	//
-	return str
+	if (!wp_sk.nochanges)
+	{
+		sel_t.qsetSelStr(input, str, true);
+	}
 
+	input.focus();
+
+	wp_sk.warning();
 }
 
 /* =====================================================
@@ -250,44 +361,46 @@ wp_sk.cleanerTpls = function (str)
    ===================================================== */
 wp_sk.cleanerWikiVaria = function (str)
 {
-	// unifikacja nagłówkowa
-	str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (też|także|również):* *'''?[ \t]*\n[ \t\n]*/gi, '\n\n== Zobacz też ==\n');
-	str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (też|także|również):* *'''?[ \t]*(.+)/gi, function(a, w1, w2, linki)
-	{
-		if (linki.indexOf('[')!=-1)
+	if ( mw.config.get( 'wp-sk-fix-wikipedia-sections', true ) ) {
+		// unifikacja nagłówkowa
+		str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (też|także|również):* *'''?[ \t]*\n[ \t\n]*/gi, '\n\n== Zobacz też ==\n');
+		str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (też|także|również):* *'''?[ \t]*(.+)/gi, function(a, w1, w2, linki)
 		{
-			// add first list el.
-			linki = '* ' + linki;
-			// next?
-			if (linki.indexOf(',')!=-1)
+			if (linki.indexOf('[')!=-1)
 			{
-				// escape in-link and in-tpl comma
-				var escape_fun = function(a){ return a.replace(/,/g,'<<<#>>>') };
-				linki = linki.replace(/\[\[[^\[\]]+\]\]/g, escape_fun);
-				linki = linki.replace(/\{\{[^\{\}]+\}\}/g, escape_fun);
-				// split
-				linki = linki.replace(/,[ \t]*/g, '\n* ');
-				// unescape
-				linki = linki.replace(/<<<#>>>/g,',');
+				// add first list el.
+				linki = '* ' + linki;
+				// next?
+				if (linki.indexOf(',')!=-1)
+				{
+					// escape in-link and in-tpl comma
+					var escape_fun = function(a){ return a.replace(/,/g,'<<<#>>>') };
+					linki = linki.replace(/\[\[[^\[\]]+\]\]/g, escape_fun);
+					linki = linki.replace(/\{\{[^\{\}]+\}\}/g, escape_fun);
+					// split
+					linki = linki.replace(/,[ \t]*/g, '\n* ');
+					// unescape
+					linki = linki.replace(/<<<#>>>/g,',');
+				}
 			}
-		}
-		return '\n\n== Zobacz też ==\n'+linki;
-	});
-	str = str.replace(/[ \n\t]*\n(=+) *(Zobacz|Patrz) (też|także|również):* *=+[ \n\t]*/gi, '\n\n$1 Zobacz też $1\n');
-	str = str.replace(/[ \n\t]*\n'''? *((Zewnętrzn[ey] )?(Linki?|Łącza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eę]trzn[aey])?):* *'''?[ \n\t]*/gi, '\n\n== Linki zewnętrzne ==\n');
-	str = str.replace(/[ \n\t]*\n(=+) *((Zewnętrzn[ey] )?(Linki?|Łącza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eę]trzn[aey])?):* *=+[ \n\t]*/gi, '\n\n$1 Linki zewnętrzne $1\n');
-	str = str.replace(/[ \n\t]*\n(=+) *([ŹŻZ]r[óo]d[łl]a):* *=+[ \n\t]*/gi, '\n\n$1 Źródła $1\n');
+			return '\n\n== Zobacz też ==\n'+linki;
+		});
+		str = str.replace(/[ \n\t]*\n(=+) *(Zobacz|Patrz) (też|także|również):* *=+[ \n\t]*/gi, '\n\n$1 Zobacz też $1\n');
+		str = str.replace(/[ \n\t]*\n'''? *((Zewnętrzn[ey] )?(Linki?|Łącza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eę]trzn[aey])?):* *'''?[ \n\t]*/gi, '\n\n== Linki zewnętrzne ==\n');
+		str = str.replace(/[ \n\t]*\n(=+) *((Zewnętrzn[ey] )?(Linki?|Łącza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eę]trzn[aey])?):* *=+[ \n\t]*/gi, '\n\n$1 Linki zewnętrzne $1\n');
+		str = str.replace(/[ \n\t]*\n(=+) *([ŹŻZ]r[óo]d[łl]a):* *=+[ \n\t]*/gi, '\n\n$1 Źródła $1\n');
+	}
 
 	// nagłówki
 	str = str.replace(/(^|\n)(=+) *([^=\n].*?)[ :]*\2(?=\s)/g, '$1$2 $3 $2'); // =a= > = a =, =a:= > = a =
 	str = str.replace(/(^|\n)(=+[^=\n]+=+)[\n]{2,}/g, '$1$2\n');	// jeden \n
 
-	
-	// przypisy - szablon
-	str = str.replace(/\n== Przypisy ==[ \t\n]+<references ?\/>/g, '\n{{Przypisy}}');
-	str = str.replace(/\n(={3,}) Przypisy \1[ \t\n]+<references ?\/>/g, '\n{{Przypisy|stopień= $1}}');
-	str = str.replace(/\{\{Przypisy\|stopień==/g, '{{Przypisy|stopień= =');
-	
+	if ( mw.config.get( 'wp-sk-fix-wikipedia-sections', true ) ) {
+		// przypisy - szablon
+		str = str.replace(/\n== Przypisy ==[ \t\n]+<references ?\/>/g, '\n{{Przypisy}}');
+		str = str.replace(/\n(={3,}) Przypisy \1[ \t\n]+<references ?\/>/g, '\n{{Przypisy|stopień= $1}}');
+		str = str.replace(/\{\{Przypisy\|stopień==/g, '{{Przypisy|stopień= =');
+	}
 
 	// przypisy - przyprzątnięcia
 	/*
@@ -398,7 +511,6 @@ wp_sk.cleanerTXT = function (str)
 
 	return str;
 }
-
 /* =====================================================
 	Function: wp_sk.cleanerMagicLinks(str)
 
@@ -1051,7 +1163,235 @@ wp_sk.iWikiFL = {
 wp_sk.iWikiFL.gather = wp_sk.iWikiFA.gather;
 wp_sk.iWikiFL.output = wp_sk.iWikiFA.output;
 
+/* =====================================================
+	Class: wp_sk.redir
 
+	Poprawianie redrictów. Przynajmniej na razie bazuje
+	na podglądzie artykułu, w którym redirecty są oznaczone
+	specjalną klasą (mw-redirect).
+
+	.init()
+		inicjowanie poprawek przez wstawienie ikonki przetwarzania
+		wyszukanie redirectów i wysłanie wstępnego żądania
+		do serwera o rozwinięcie redirectów
+	.resp(res)
+		funkcja przyjmująca odpowiedzieć (res) z serwera
+		i przetwarzająca ją na tabelką rozwinięć redirectów
+
+	.arr	- tabela rozwinięć redirectów wykorzystywana wewnętrznie
+	.arr_i	- indeks używany przy tworzeniu tabeli
+	.url	- url wstępnego zapytania, potrzebny w razie
+			konieczności kontynuowania żądań (wymóg API)
+   ===================================================== */
+//
+// object init
+//
+wp_sk.redir = new Object();
+
+wp_sk.redir.linkPrefix = document.location.protocol + "//" + document.location.hostname + mw.config.get( 'wgArticlePath' ).replace( '$1', '' );
+
+wp_sk.redir.extractTitle = function( link ) {
+	if ( link.substring( 0, this.linkPrefix.length ) != this.linkPrefix ) {
+		return null;
+	}
+
+	return decodeURIComponent( link.substring( this.linkPrefix.length ).replace( /_/g, ' ' ) ).replace( /#.*$/, '' );
+}
+
+//
+// .init()
+//
+wp_sk.redir.init = function()
+{
+	wp_sk.redir.base_url = mw.util.wikiScript('api') + '?action=query&redirects&format=json&titles=';
+
+	// ograniczenie czasowe, ale tylko w podglądzie (żeby nie zamęczyć serwerów)
+	if (wgAction=='submit')
+	{
+		if (document.cookie.indexOf('wpsk_redir_time_disable=1')!=-1)
+		{
+			return;
+		}
+		else
+		{
+			var d = new Date();
+			d = new Date(d.getTime()+300000); //+5min (il. sekund * 1000)
+			document.cookie = "wpsk_redir_time_disable=1; path=/; expires=" + d.toGMTString();
+		}
+	}
+
+	var elWikiBody = document.getElementById('wikiPreview');
+	if (elWikiBody)
+	{
+		//
+		// szukanie przekierowań
+		wp_sk.redir.urls = new Array();
+		wp_sk.redir.urls[0] = new Array();
+		var url_i = url_j = 0;
+		var as = jQuery("a.mw-redirect");
+		for (var i=0; i<as.length; i++)
+		{
+			var tmp = this.extractTitle( as[i].href );
+			if ( tmp == null ) {
+				continue;
+			}
+			// new url?
+			var isnew=true;
+			for (var ui=0; ui<=url_i; ui++)
+			{
+				for (var uj=0; uj<url_j; uj++)
+				{
+					if (wp_sk.redir.urls[ui][uj]==tmp)
+					{
+						isnew=false;
+						break;
+					}
+				}
+				if (!isnew)
+					break;
+			}
+			// add to array
+			if (isnew)
+			{
+				wp_sk.redir.urls[url_i][url_j++] = tmp;
+				if (url_j>=50)	// ograniczenie API
+				{
+					if (url_i>=4)	// max (4+1)x50 linków
+					{
+						break;
+					}
+					url_j = 0;
+					wp_sk.redir.urls[++url_i] = new Array();
+				}
+			}
+		}
+		//
+		// ostateczne przygotowanie i wysyłanie żądania
+		if (wp_sk.redir.urls[0].length>0)
+		{
+			var $notice = jQuery('<div id="wp-sk-redir-notice">Sprawdzanie linków do przekierowań...</div>');
+			jQuery('#wpTextbox1').before($notice);
+
+			// na znalezione redirecty
+			wp_sk.redir.arr = new Array();
+			wp_sk.redir.arr_i = 0;
+
+			// przygotowanie pierwszej porcji
+			wp_sk.redir.urls_i = 0;
+			var url = wp_sk.redir.urls[wp_sk.redir.urls_i].join('|');
+			wp_sk.redir.url = wp_sk.redir.base_url+url;
+			wp_sk.redir.full_prev_url = wp_sk.redir.url;
+			//wp_sk.debug('<h2>['+wp_sk.redir.urls_i+']['+wp_sk.redir.urls[wp_sk.redir.urls_i].length+']</h2>');
+			// run
+			var that = this;
+			jQuery.getJSON( wp_sk.redir.url, null, function( result ) {
+				that.resp( result );
+			} );
+		}
+	}
+}
+
+//
+// .resp(res)
+//
+wp_sk.redir.resp = function (jres)
+{
+	var that = this;
+
+	// zbiórka tłumaczenia redirectów
+	var txtescape = /([\\^\$\*\+\?\.\(\)\[\]\{\}\:\=\!\|\,\-])/g;
+	for (var r in jres.query.redirects)
+	{
+		r = jres.query.redirects[r];
+		wp_sk.redir.arr[wp_sk.redir.arr_i++] = {
+			'rdir' : r.from,
+			'art' : r.to
+		}
+		//wp_sk.debug('['+(wp_sk.redir.arr_i-1)+']rdir:'+r.from+'<br />art:'+r.to);
+	}
+	// kontynuacja?
+	if (jres['query-continue']!=null)
+	{
+		var continue_url = wp_sk.redir.url + '&plcontinue='+encodeURIComponent(jres['query-continue'].links.plcontinue);
+		if (wp_sk.redir.full_prev_url != continue_url)	// <s>api</s> potential bug workaround
+		{
+			wp_sk.redir.full_prev_url = continue_url;
+			jQuery.getJSON( continue_url, null, function( result ) {
+				that.resp( result );
+			} );
+			return;
+		}
+		else
+		{
+			//wp_sk.debug('<p style="font-weight:bold;font-size:200%">Warning! Query continue loop.</p>');
+		}
+	}
+	// kolejna porcja linków
+	else if (wp_sk.redir.urls_i < wp_sk.redir.urls.length-1)
+	{
+		var url = wp_sk.redir.urls[++wp_sk.redir.urls_i].join('|');
+		wp_sk.redir.url = wp_sk.redir.base_url+url;
+		wp_sk.redir.full_prev_url = wp_sk.redir.url;
+		//wp_sk.debug('<h2>['+wp_sk.redir.urls_i+']['+wp_sk.redir.urls[wp_sk.redir.urls_i].length+']</h2>');
+		jQuery.getJSON( wp_sk.redir.url, null, function( result ) {
+			that.resp( result );
+		} );
+		return;
+	}
+
+	/*
+	// debug - start
+	var str;
+	// szukane
+	str = ''
+	for (var i=0;i<wp_sk.redir.urls.length;i++)
+		for (var j=0;j<wp_sk.redir.urls[i].length;j++)
+			str += '\nwp.urls['+i+']['+j+']='+ wp_sk.redir.urls[i][j]
+	;
+	wp_sk.debug('<textarea>'+str+'</textarea>');
+
+	// znalezione
+	str = ''
+	for (var i=0;i<wp_sk.redir.arr.length;i++)
+		str += '\nwp.rdirs['+i+']='+ wp_sk.redir.arr[i].rdir
+	;
+	wp_sk.debug('<textarea>'+str+'</textarea>');
+	// debug - end
+	*/
+
+	// przygotowanie funkcji podmiany redirectów
+	wp_sk.cleanerLinks_orig = wp_sk.cleanerLinks;
+	wp_sk.cleanerLinks = function (str)
+	{
+		var reTxtEscape = /([\\^\$\*\+\?\.\(\)\[\]\{\}\:\=\!\|\,\-])/g;
+		for (var page in wp_sk.redir.arr)
+		{
+			page = wp_sk.redir.arr[page];
+			var re = page.rdir.replace(reTxtEscape,'\\$1');
+			if (re.search(/^[a-zżółćęśąźń]/i)==0)
+			{
+				re = '['+ re[0].toLowerCase() + re[0].toUpperCase() +']'
+					+ re.substr(1);
+			}
+			var re = new RegExp('\\[\\[('+re+')(\\||\\]\\])', 'g');
+			str = str.replace(re, function (a, art, end)
+			{
+				return '[['+ page.art + (end=='|' ? '|' : '|'+art+']]');
+			});
+		}
+
+		return wp_sk.cleanerLinks_orig(str);	// dopiero teraz, żeby poprawiać także zmienione linki
+	}
+
+	jQuery( "#wp-sk-redir-notice" ).remove();
+
+	var el = document.getElementById( 'wp_sk_img_btn' );
+	if ( toolbarGadget.wikieditor ) {
+		el.src = '//commons.wikimedia.org/w/thumb.php?f=Broom%20icon%20R.svg&w=22';
+	} else {
+		el.src = '//upload.wikimedia.org/wikipedia/commons/3/31/Button_broom_R.png';
+	}
+}
 /* -----------------------------------------------------
 	Klasy wspomagające porządkowanie            {KONIEC}
    ===================================================== */
@@ -1080,6 +1420,31 @@ if (!Array.prototype.indexOf)
 		return -1;
 	};
 }
+
+wp_sk.sz_redirs_tab = {};
+
+/* =====================================================
+	OnLoad
+   ===================================================== */
+
+
+jQuery( document ).ready( function() {
+	if ( mw.config.get( 'wgAction' ) != 'submit' && mw.config.get( 'wgAction' ) != 'edit' ) {
+		return;
+	}
+
+	if ( wp_sk_show_as_button ) {
+		wp_sk.button();
+	}
+
+	// ktoś może mieć ustawiony podgląd od razu przy edycji - wówczas działa od razu
+	if ( wp_sk_redir_enabled ) {
+		wp_sk.redir.init();
+	}
+} );
+
+// </nowiki>
+
 
 /* =====================================================
 	ujednolicanie szablonów wg:
@@ -1197,3 +1562,4 @@ wp_sk.sz_redirs_tab = {
 	'–w' : '–wrap',
 	'•w' : '•wrap'
 };
+
