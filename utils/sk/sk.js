@@ -1,4 +1,3 @@
-// <nowiki>
 /* ------------------------------------------------------------------------ *\
     Moduł sprzątania kodu
 
@@ -19,103 +18,8 @@
 	* Wikipedysta:Beau - za inspiracje i poprawki
 \* ------------------------------------------------------------------------ */
 
-//
-// Moduły zewnętrzne dla projektów siostrzanych
-//
-if ( ( typeof sel_t ) !== 'object' ) {
-	mw.loader.load( '//pl.wikipedia.org/w/index.php?action=raw&ctype=text/javascript&title=MediaWiki:Gadget-sel_t.js' );
-}
 
-/* =====================================================
-	Object Init
-   ===================================================== */
-
-if ( typeof( wp_sk_show_as_button ) === 'undefined' ) {
-	window.wp_sk_show_as_button = true;
-}
-if ( typeof( wp_sk_redir_enabled ) === 'undefined' ) {
-	window.wp_sk_redir_enabled = false;
-}
-
-if (window.wp_sk)
-{
-	alert('Błąd krytyczny - konflikt nazw!\n\nJeden ze skryptów używa już nazwy wp_sk jako zmienną globalną.');
-}
-window.wp_sk = new Object();
-wp_sk.version = '2.7.31a';
-
-/* =====================================================
-	Function: wp_sk.debug(htxt)
-
-	Wyświetlenie komunikatu html jeśli debug aktywny
-   ===================================================== */
-wp_sk.debug = function (htxt)
-{
-	if (typeof wp_sk_debug_enabled!='undefined' && wp_sk_debug_enabled && typeof nux_debug=='function')
-	{
-		nux_debug(htxt);
-	}
-}
-
-/* =====================================================
-	Function: wp_sk.button()
-
-	Dodaje przycisk sprzątania
-   ===================================================== */
-wp_sk.button = function() {
-	var that = this;
-	mw.loader.using( "ext.gadget.lib-toolbar", function() {
-		toolbarGadget.addButton( {
-			title: 'Sprzątanie kodu (wer. ' + that.version + ')',
-			alt: 'SK',
-			id: 'wp_sk_img_btn',
-			oldIcon: '//upload.wikimedia.org/wikipedia/commons/2/2e/Button_broom.png',
-			newIcon: '//commons.wikimedia.org/w/thumb.php?f=Broom%20icon.svg&w=22',
-			onclick: function() {
-				that.cleanup( document.getElementById( 'wpTextbox1' ) );
-			}
-		} );
-	} );
-}
-
-/* =====================================================
-	Function: wp_sk.warning(input)
-
-	Dodaje ostrzeżenie i likwiduje je
-	po wciśnięciu odpowiedniego przycisku
-   ===================================================== */
-wp_sk.warning = function() {
-	var $summary = jQuery( '#wpSummary' );
-	if ( this.nochanges ) {
-		// kolorowanka, gdy bez zmian
-		$summary.css( 'border', '2px solid #696' );
-	} else if ( mw.config.get( 'wgArticleId' ) > 0 ) {
-		$summary.css( 'border', '' );
-
-		var text = $summary.val();
-
-		var summary1 = 'po czyszczeniu kodu przejrzyj wykonane zmiany!';
-		var summary2 = mw.config.get( 'wp-sk-summary', '[[WP:SK]]' );
-
-		if ( text.indexOf( summary1 ) > -1 || text.indexOf( summary2 ) > -1 ) {
-			// opis już jest, nie potrzeba następnego
-			return;
-		}
-
-		if ( text != '' ) {
-			text += ', ';
-		}
-		text += summary1;
-		$summary.val( text );
-		$summary.addClass( 'summaryWarning' );
-
-		var $diff = jQuery( '#wpDiff' );
-		$diff.addClass( 'summaryWarning' );
-		$diff.click( function() {
-			$summary.val( $summary.val().replace( summary1, summary2 ) );
-		} );
-	}
-}
+wp_sk = new Object();
 
 
 /* =====================================================
@@ -124,17 +28,9 @@ wp_sk.warning = function() {
 	Główna funkcja inicjująca i wywołująca funkcję
 	czyszczącą
    ===================================================== */
-wp_sk.cleanup = function (input)
+wp_sk.cleanup = function (str)
 {
-	// default input
-	if (!input)
-	{
-		input = document.getElementById('wpTextbox1')
-	}
-	//
-	// Pobierz zaznaczony fragment (całość jeśli nic nie zaznaczone)
-	//
-	var str = sel_t.getSelStr(input, true);
+
 	// OMG - IE & Opera fix
 	str = str.replace(/\r\n/g, '\n');
 
@@ -142,21 +38,9 @@ wp_sk.cleanup = function (input)
 	// Wywołanie czyszciciela
 	//
 	str = str.replace(/\n+$/,''); // bez końcowych enterów
-	var str_pre = str;
 	str = wp_sk.cleaner(str);
-	wp_sk.nochanges = (str==str_pre);
 
-	//
-	// zapisanie zmian
-	//
-	if (!wp_sk.nochanges)
-	{
-		sel_t.qsetSelStr(input, str, true);
-	}
-
-	input.focus();
-
-	wp_sk.warning();
+  return str;
 }
 
 /* =====================================================
@@ -178,10 +62,6 @@ wp_sk.cleaner = function (str)
 	str = wp_sk.cleanerWikiVaria(str);	// pozostałe wikiskładniowe
 
 	str = wp_sk.cleanerTXT(str);		// poza składniowe
-
-	if (wp_sk.projectSpecificCleanup) {
-		str = wp_sk.projectSpecificCleanup(str);
-	}
 
 	//
 	// końcowe porządkowanie międzywiki itp
@@ -361,7 +241,6 @@ wp_sk.cleanerTpls = function (str)
    ===================================================== */
 wp_sk.cleanerWikiVaria = function (str)
 {
-	if ( mw.config.get( 'wp-sk-fix-wikipedia-sections', true ) ) {
 		// unifikacja nagłówkowa
 		str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (też|także|również):* *'''?[ \t]*\n[ \t\n]*/gi, '\n\n== Zobacz też ==\n');
 		str = str.replace(/[ \n\t]*\n'''? *(Zobacz|Patrz) (też|także|również):* *'''?[ \t]*(.+)/gi, function(a, w1, w2, linki)
@@ -389,18 +268,15 @@ wp_sk.cleanerWikiVaria = function (str)
 		str = str.replace(/[ \n\t]*\n'''? *((Zewnętrzn[ey] )?(Linki?|Łącza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eę]trzn[aey])?):* *'''?[ \n\t]*/gi, '\n\n== Linki zewnętrzne ==\n');
 		str = str.replace(/[ \n\t]*\n(=+) *((Zewnętrzn[ey] )?(Linki?|Łącza|Stron[ay]|Zobacz w (internecie|sieci))( zewn[eę]trzn[aey])?):* *=+[ \n\t]*/gi, '\n\n$1 Linki zewnętrzne $1\n');
 		str = str.replace(/[ \n\t]*\n(=+) *([ŹŻZ]r[óo]d[łl]a):* *=+[ \n\t]*/gi, '\n\n$1 Źródła $1\n');
-	}
 
 	// nagłówki
 	str = str.replace(/(^|\n)(=+) *([^=\n].*?)[ :]*\2(?=\s)/g, '$1$2 $3 $2'); // =a= > = a =, =a:= > = a =
 	str = str.replace(/(^|\n)(=+[^=\n]+=+)[\n]{2,}/g, '$1$2\n');	// jeden \n
 
-	if ( mw.config.get( 'wp-sk-fix-wikipedia-sections', true ) ) {
 		// przypisy - szablon
 		str = str.replace(/\n== Przypisy ==[ \t\n]+<references ?\/>/g, '\n{{Przypisy}}');
 		str = str.replace(/\n(={3,}) Przypisy \1[ \t\n]+<references ?\/>/g, '\n{{Przypisy|stopień= $1}}');
 		str = str.replace(/\{\{Przypisy\|stopień==/g, '{{Przypisy|stopień= =');
-	}
 
 	// przypisy - przyprzątnięcia
 	/*
@@ -783,11 +659,11 @@ wp_sk.cat.output = function (a)
 	{
 		return a;
 	}
-	var str = mw.config.get( 'wp-sk-categories-head', '\n' );
+	var str = '\n';
 
 	//
 	// sortowanie (jeśli dostępna odpowiednia funkcja)
-	if ( mw.config.get( 'wp-sk-sort-categories', false ) ) {
+	if ( false ) {
 		var collator = new PolishCollator();
 		wp_sk.cat.arr.sort( function( a, b ) {
 			return collator.compare( a, b );
@@ -1162,7 +1038,6 @@ wp_sk.iWikiFL = {
 // rest as above
 wp_sk.iWikiFL.gather = wp_sk.iWikiFA.gather;
 wp_sk.iWikiFL.output = wp_sk.iWikiFA.output;
-
 /* =====================================================
 	Class: wp_sk.redir
 
@@ -1188,7 +1063,7 @@ wp_sk.iWikiFL.output = wp_sk.iWikiFA.output;
 //
 wp_sk.redir = new Object();
 
-wp_sk.redir.linkPrefix = document.location.protocol + "//" + document.location.hostname + mw.config.get( 'wgArticlePath' ).replace( '$1', '' );
+wp_sk.redir.linkPrefix = "whatevs";
 
 wp_sk.redir.extractTitle = function( link ) {
 	if ( link.substring( 0, this.linkPrefix.length ) != this.linkPrefix ) {
@@ -1421,40 +1296,6 @@ if (!Array.prototype.indexOf)
 	};
 }
 
-wp_sk.sz_redirs_tab = {};
-
-/* =====================================================
-	OnLoad
-   ===================================================== */
-
-
-jQuery( document ).ready( function() {
-	if ( mw.config.get( 'wgAction' ) != 'submit' && mw.config.get( 'wgAction' ) != 'edit' ) {
-		return;
-	}
-
-	if ( wp_sk_show_as_button ) {
-		wp_sk.button();
-	}
-
-	// ktoś może mieć ustawiony podgląd od razu przy edycji - wówczas działa od razu
-	if ( wp_sk_redir_enabled ) {
-		wp_sk.redir.init();
-	}
-} );
-
-// </nowiki>
-
-
-/* =====================================================
-	ujednolicanie szablonów wg:
-	http://pl.wikipedia.org/wiki/Wikiprojekt:Sprz%C4%85tanie_szablon%C3%B3w/redirecty#linkowane
-   ===================================================== */
-/*
-! bez  'nobots' : 'Bots',
-	re_obj.s = new Array(/(?:^|\n)#[ {]+noredirect\|Szablon:([^}]+)[^\[]+[\[]+Szablon:([^\]]+).+/g, /\n#.+/g);
-	re_obj.r = new Array(function(a,from,to) {if (from=='Nobots') {return '';} else return "\n\t'"+from.toLowerCase().replace('\\','\\\\').replace("'","\\'")+"' : '"+to.replace('\\','\\\\').replace("'","\\'")+"',";}, '');
-*/ // 2011-08-11
 wp_sk.sz_redirs_tab = {
 	'!w' : '!wrap',
 	'+-' : '±',

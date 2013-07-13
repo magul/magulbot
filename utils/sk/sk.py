@@ -29,5 +29,3 @@ def sk(text):
 # actual check
 	return js_exec.call("wp_sk.cleaner", text)
 
-
-print sk('[[Kto%C5%9B_jaki%C5%9B#co.C5.9B|...]]')
