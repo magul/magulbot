@@ -58,6 +58,7 @@ def divide(number):
 from wikipedia import *
 import catlib
 import sqlite3 as lite
+import utils.sk
 
 # bot imports
 from fixies import *
@@ -138,16 +139,16 @@ for row in data:
 		pl_page_text += u' |3. jednostka administracyjna =\n'
 		pl_page_text += u' |4. jednostka administracyjna =\n'
 		pl_page_text += u' |5. jednostka administracyjna =\n'
-		pl_page_text += u' |stanowisko zarządzającego    =\n'
-		pl_page_text += u' |zarządzający                 =\n'
+		pl_page_text += u' |stanowisko zarządzającego    = Alkad\n'
+		pl_page_text += u' |zarządzający                 = {{#property:P6}}\n'
 		pl_page_text += u' |powierzchnia                 = ' + str(area).replace('.',',') + u'{{r|ssweb}}\n'
 		pl_page_text += u' |wysokość                     =\n'
 		pl_page_text += u' |rok                          = 2011\n'
 		pl_page_text += u' |liczba ludności              = ' + divide(population) + u'{{r|ssweb}}\n'
 		pl_page_text += u' |gęstość zaludnienia          = ' + divide(int(round(100*population/area)/100)) + u',' + str(int(round(100*population/area)%100)).zfill(2) + u'\n'
-		pl_page_text += u' |numer kierunkowy             =\n'
+		pl_page_text += u' |numer kierunkowy             = {{#property:P473}}\n'
 		pl_page_text += u' |kod pocztowy                 =\n'
-		pl_page_text += u' |tablice rejestracyjne        =\n'
+		pl_page_text += u' |tablice rejestracyjne        = {{#property:P395}}\n'
 		pl_page_text += u' |kod mapy                     = ' + (auto_com[pl_province][:auto_com[pl_province].find(u'(')-1] + u'\n' if u'(' in auto_com[pl_province] else auto_com[pl_province] + '\n')
 		pl_page_text += u' |wariant mapy                 =\n'
 		pl_page_text += u' |stopniN = ' + str(int(lat)) + u' |minutN = ' + str(int(lat*60)%60) + u' |sekundN = ' + str(int(lat*3600)%60) + u'\n'
@@ -157,7 +158,7 @@ for row in data:
 			lon *= -1
 			pl_page_text += u' |stopniW = ' + str(int(lon)) + u' |minutW = ' + str(int(lon*60)%60) + u' |sekundW = ' + str(int(lon*3600)%60) + u'\n'
 		pl_page_text += u' |opis miejsca                 =\n'
-		pl_page_text += u' |commons                      = ' + (commons  + u'\n' if commons != None else u'\n')
+		pl_page_text += u' |commons                      =' + (u' ' + commons  + u'\n' if commons != None else u'\n')
 		pl_page_text += u' |wikipodróże                  =\n'
 		pl_page_text += u' |www                          =' + (u' ' + www + u'\n}}\n' if www != None else u'\n}}\n')
 # body of article
@@ -182,14 +183,21 @@ for row in data:
 	
 # put page in wikipedia
 		print '===================================>', pl_page.title()
-		pl_page.put(pl_page_text, u'Bot dodaje artykuł nt. gminy Hiszpanii')
+# if it's valid with WP:SK
+		if sk.SK(text) == text:
+			pl_page.put(pl_page_text, u'Bot dodaje artykuł nt. gminy Hiszpanii')
 # add interwiki to wikidata
-		repo = plwiki.data_repository()
-		data = DataPage(repo, wikidata)
-		data.setitem(summary=u'adding pl.wiki sitelink', items={'type': u'sitelink', 'site': 'pl', 'title': pl_page.title()})		
-
+			repo = plwiki.data_repository()
+			data = DataPage(repo, wikidata)
+			data.setitem(summary=u'adding pl.wiki sitelink', items={'type': u'sitelink', 'site': 'pl', 'title': pl_page.title()})		
+# if not valid - print error and break
+		else:
+			print u'BŁĄD!!!'
+			break
 # counter
 		edit_ct += 1
 		if edit_ct == max_edits:
+			print u'LICZNIK'
 			break
 
+print u'KONIEC'
