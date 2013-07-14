@@ -174,7 +174,7 @@ for row in data:
 # references
 		pl_page_text += u'== Przypisy ==\n'
 		pl_page_text += u'{{Przypisy-lista|\n'
-		pl_page_text += u'<ref name=ssweb>{{cytuj stronę | url = http://ssweb.mpt.es/REL/frontend/inicio/municipios/all/all/' + db_offset + u' | tytuł = Datos del registro de Entidades Locales | data dostępu = 2013-06-16 | autor = Ministerio de Hacienda y Administraciones Públicas | język = es }}</ref>\n'
+		pl_page_text += u'<ref name=ssweb>{{cytuj stronę | url = http://ssweb.mpt.es/REL/frontend/inicio/municipios/all/all/' + db_offset + u' | tytuł = Datos del registro de Entidades Locales | data dostępu = 2013-06-16 | autor = Ministerio de Hacienda y Administraciones Públicas | język = es}}</ref>\n'
 		pl_page_text += u'}}\n\n'
 # template and category
 		pl_page_text += u'{{Prowincja ' + pl_province + u'}}\n\n'
