@@ -96,7 +96,7 @@ data = cur.fetchall()
 con.close()
 
 # limit edit
-max_edits = 1
+max_edits = 49
 edit_ct = 0
 
 # for every row in data
