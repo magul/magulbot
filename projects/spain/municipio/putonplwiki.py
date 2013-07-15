@@ -58,7 +58,7 @@ def divide(number):
 from wikipedia import *
 import catlib
 import sqlite3 as lite
-import utils.sk
+from utils.sk.sk import sk
 
 # bot imports
 from fixies import *
@@ -96,11 +96,11 @@ data = cur.fetchall()
 con.close()
 
 # limit edit
-max_edits = 10000
+max_edits = 1
 edit_ct = 0
 
 # for every row in data
-for row in data:
+for row in data[4030:]:
 # extract data from tuple
 	population = row[0]
 	area = row[1]
@@ -124,15 +124,15 @@ for row in data:
 	pl_page = Page(plwiki, pl_page)
 	if not pl_page.exists():
 # create template - infobox
-		pl_page_text  = u'{{Miejscowość infobox\n'
+		pl_page_text  = u'{{Miejscowość WIKIDATA infobox\n'
 		pl_page_text += u' |nazwa                        = ' + spanish_name + u'\n'
 		pl_page_text += u' |nazwa oryginalna             =\n'
-		pl_page_text += u' |zdjęcie                      =' + (u' ' + image + u'\n' if image != None else u'\n')
+		pl_page_text += u' |zdjęcie                      =\n'
 		pl_page_text += u' |opis zdjęcia                 =\n'
-		pl_page_text += u' |herb                         =' + (u' ' + coa + u'\n' if coa != None else u'\n')
-		pl_page_text += u' |flaga                        =' + (u' ' + flag + u'\n' if flag != None else u'\n')
+		pl_page_text += u' |herb                         =\n'
+		pl_page_text += u' |flaga                        =\n'
 		pl_page_text += u' |dopełniacz nazwy             = ' + spanish_name + u'\n'
-		pl_page_text += u' |państwo                      = ESP\n'
+		pl_page_text += u' |państwo                      = Hiszpania\n'
 		pl_page_text += u' |wariant flagi                =\n'
 		pl_page_text += u' |1. jednostka administracyjna = [[' + auto_com[pl_province] + (u'|' + auto_com[pl_province][:auto_com[pl_province].find(u'(')-1] + u']]\n' if u'(' in auto_com[pl_province] else u']]\n')
 		pl_page_text += u' |2. jednostka administracyjna = [[' + prov[pl_province] + (u'|' + pl_province + u']]\n' if pl_province != prov[pl_province] else u']]\n')
@@ -140,15 +140,15 @@ for row in data:
 		pl_page_text += u' |4. jednostka administracyjna =\n'
 		pl_page_text += u' |5. jednostka administracyjna =\n'
 		pl_page_text += u' |stanowisko zarządzającego    = Alkad\n'
-		pl_page_text += u' |zarządzający                 = {{#property:P6}}\n'
+		pl_page_text += u' |zarządzający                 =\n'
 		pl_page_text += u' |powierzchnia                 = ' + str(area).replace('.',',') + u'{{r|ssweb}}\n'
 		pl_page_text += u' |wysokość                     =\n'
 		pl_page_text += u' |rok                          = 2011\n'
 		pl_page_text += u' |liczba ludności              = ' + divide(population) + u'{{r|ssweb}}\n'
 		pl_page_text += u' |gęstość zaludnienia          = ' + divide(int(round(100*population/area)/100)) + u',' + str(int(round(100*population/area)%100)).zfill(2) + u'\n'
-		pl_page_text += u' |numer kierunkowy             = {{#property:P473}}\n'
+		pl_page_text += u' |numer kierunkowy             =\n'
 		pl_page_text += u' |kod pocztowy                 =\n'
-		pl_page_text += u' |tablice rejestracyjne        = {{#property:P395}}\n'
+		pl_page_text += u' |tablice rejestracyjne        =\n'
 		pl_page_text += u' |kod mapy                     = ' + (auto_com[pl_province][:auto_com[pl_province].find(u'(')-1] + u'\n' if u'(' in auto_com[pl_province] else auto_com[pl_province] + '\n')
 		pl_page_text += u' |wariant mapy                 =\n'
 		pl_page_text += u' |stopniN = ' + str(int(lat)) + u' |minutN = ' + str(int(lat*60)%60) + u' |sekundN = ' + str(int(lat*3600)%60) + u'\n'
@@ -184,7 +184,7 @@ for row in data:
 # put page in wikipedia
 		print '===================================>', pl_page.title()
 # if it's valid with WP:SK
-		if sk.SK(text) == text:
+		if sk(text) == text:
 			pl_page.put(pl_page_text, u'Bot dodaje artykuł nt. gminy Hiszpanii')
 # add interwiki to wikidata
 			repo = plwiki.data_repository()

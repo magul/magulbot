@@ -21,7 +21,7 @@ def sk(text):
 	if Page(plwiki, 'MediaWiki:Gadget-sk-local.js').getVersionHistory()[0][1] != js_local_date:
 		print 'MediaWiki:Gadget-sk-local.js IS OUT OF DATE'
 # read js code...
-	f = open('sk.js', 'r')
+	f = open('/home/magul/magulbot/utils/sk/sk.js', 'r')
 	js_code = f.read().decode('utf-8')
 	f.close()
 # ... and compile it
