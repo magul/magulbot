@@ -20,6 +20,7 @@ con.close()
 plwiki = getSite('pl', 'wikipedia')
 repo = plwiki.data_repository()
 edit_ct = 0
+i=0
 for item in data:
 	wd = item[1]
 	es = item[0]
@@ -34,7 +35,11 @@ for item in data:
 
 	if not 2074737 in instanceof and not 5055981 in instanceof:
 		if text.find(u'[[Categoría:Municipios') != -1:
-			wd_item.editclaim(31, 2074737, refs={(143, 8449)})
+			wd_item.createclaim(31, 2074737, refs={(143, 8449)})
 			edit_ct += 1
+		else:
+			print es
+			i += 1
 	if edit_ct == 10000:
 		break
+print i
