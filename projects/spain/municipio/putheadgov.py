@@ -14,7 +14,7 @@ cur = con.cursor()
 
 cur.execute(u'SELECT wikidata, gov_wd, gov, spanish_name from municipio')
 data = cur.fetchall()
-for item in data:
+for item in data[345:]:
 	mun_wd = int(item[0][1:])
 	if item[1] != None:
 		gov_wd = int(item[1][1:])
@@ -33,13 +33,15 @@ for item in data:
 	if gov_ct == 0 and gov!=None:
 		print mun_wd
 		gov_page = DataPage('es', gov)
-		gov_wd = int(gov_page.createitem(u'Creating item for alcalde of '+sp_name+', municipality of Spain', value={'labels': { 'es': {'language': 'es', 'value' : gov}, 'en': {'language': 'en', 'value' : gov}, 'pl': {'language': 'pl', 'value' : gov}}, 'sitelinks': {}})[2][u'entity'][u'id'][1:])
+		while gov_wd == None:
+			try:
+				gov_wd = int(gov_page.createitem(u'Creating item for alcalde of '+sp_name+', municipality of Spain', value={'labels': { 'es': {'language': 'es', 'value' : gov}, 'en': {'language': 'en', 'value' : gov}, 'pl': {'language': 'pl', 'value' : gov}}, 'sitelinks': {}})[2][u'entity'][u'id'][1:])
+			except:
+				pass
 		gov_page = DataPage(gov_wd)
 		gov_page.setitem(summary=u'Spanish description', items={'type': u'description', 'language': 'es', 'value': 'político de España'})
 		gov_page.setitem(summary=u'English description', items={'type': u'description', 'language': 'en', 'value': 'Spanish politician'})
 		gov_page.setitem(summary=u'Polish description', items={'type': u'description', 'language': 'pl', 'value': 'polityk hiszpański'})
 		mun_page.editclaim(6,gov_wd)
-		break
-
 
 con.close()
