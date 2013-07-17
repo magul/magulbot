@@ -14,7 +14,7 @@ cur = con.cursor()
 
 cur.execute(u'SELECT wikidata, gov_wd, gov, spanish_name from municipio')
 data = cur.fetchall()
-for item in data[345:]:
+for item in data[1035:]:
 	mun_wd = int(item[0][1:])
 	if item[1] != None:
 		gov_wd = int(item[1][1:])
