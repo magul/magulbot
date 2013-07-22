@@ -38,5 +38,6 @@ for item in data:
 			upd_st += lang + u" = '" + texts[lang] + "',"
 		upd_st = upd_st[:-1] + u" WHERE wikidata='" + item[0] + "'"
 		cur.execute(upd_st)
+	print iws
 
 con.close
