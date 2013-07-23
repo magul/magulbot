@@ -14,7 +14,7 @@ con = lite.connect('municipio.sqlite', isolation_level=None)
 cur = con.cursor()
 
 # sqlite select
-cur.execute(u'SELECT wikidata from municipio')
+cur.execute(u'SELECT wikidata from municipio WHERE not (eu_page_text not null or ca_page_text not null or gl_page_text not null or an_page_text not null or ast_page_text not null or ext_page_text not null)')
 data = cur.fetchall()
 
 # create sites
@@ -29,6 +29,7 @@ for item in data:
 	wd_page = DataPage(wd_site, item[0])
 	wd_page.get()
 	iws = wd_page.interwiki()
+	print iws
 	for iw in iws:
 		if iw.site() in others.values():
 			texts[iw.site().code+'_page_text'] = iw.get().replace("'", "''")
@@ -38,6 +39,5 @@ for item in data:
 			upd_st += lang + u" = '" + texts[lang] + "',"
 		upd_st = upd_st[:-1] + u" WHERE wikidata='" + item[0] + "'"
 		cur.execute(upd_st)
-	print iws
 
 con.close

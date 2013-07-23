@@ -7,7 +7,7 @@
 
 
 # extract template
-def exttem(name, text):
+def exttemp(name, text):
 	idx = text.lower().find(u'{{'+name)
 	template = text[idx:]
 	depth = 0
@@ -21,7 +21,7 @@ def exttem(name, text):
 	return template[2:idx]
 
 # create dictionary from template
-def tem2dict(template):
+def temp2dict(template):
 # split using |
 	temdict = dict()
 	list = template.split(u'|')[1:]
@@ -93,7 +93,7 @@ for item in data:
 # compare es.wiki with wikidata
 repo = eswiki.data_repository()
 cur.execute(u'SELECT wikidata, gov_wd, gov from municipio')
-data = cur.fetchall()
+data = []#cur.fetchall()
 for item in data:
 	sql_mun = item[0]
 	if item[1]!=None:
@@ -113,4 +113,201 @@ for item in data:
 	if wd_alc != sql_alc and wd_alc != None:
 		print sql_mun, '===> alcalde not equal:', (sql_alc if sql_alc!=None else u'None'), '!=', wd_alc, '(in database:', item[2], ')'
 
+
+# compare wikidata with eu.wiki
+# Espainiako udalerri infotaula
+#cur.execute(u'SELECT gov, eu_page_text, es_page, gov_wd from municipio where gov not null and eu_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Espainiako udalerri infotaula') != -1:
+		tmpdict = temp2dict(exttemp('espainiako udalerri infotaula', text))
+		if 'alkatea' in tmpdict:
+			if tmpdict['alkatea'].find(u'[[') == 0:
+				eu_gov = tmpdict['alkatea']
+				eu_gov = eu_gov[2:] if eu_gov.find(u']]') == -1 else eu_gov[2:eu_gov.find(u']]')]
+				gov_page = Page(getSite('eu', 'wikipedia'), eu_gov)
+				if gov_page.exists():
+					print gov, '==>', eu_gov, '==>', wd_gov, '==>', es
+# Bizkaiko udalerri infotaula
+#cur.execute(u'SELECT gov, eu_page_text, es_page, gov_wd from municipio where gov not null and eu_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Bizkaiko udalerri infotaula') != -1:
+		tmpdict = temp2dict(exttemp('bizkaiko udalerri infotaula', text))
+		if 'alkatea' in tmpdict:
+			if tmpdict['alkatea'].find(u'[[') == 0:
+				eu_gov = tmpdict['alkatea']
+				eu_gov = eu_gov[2:] if eu_gov.find(u']]') == -1 else eu_gov[2:eu_gov.find(u']]')]
+				gov_page = Page(getSite('eu', 'wikipedia'), eu_gov)
+				if gov_page.exists():
+					print gov, '==>', eu_gov, '==>', wd_gov, '==>', es
+# Nafarroako udalerri infotaula
+#cur.execute(u'SELECT gov, eu_page_text, es_page, gov_wd from municipio where eu_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Nafarroako udalerri infotaula') != -1:
+		tmpdict = temp2dict(exttemp('nafarroako udalerri infotaula', text))
+		if 'alkatea' in tmpdict:
+			if tmpdict['alkatea'].find(u'[[') == 0:
+				eu_gov = tmpdict['alkatea']
+				eu_gov = eu_gov[2:] if eu_gov.find(u']]') == -1 else eu_gov[2:eu_gov.find(u']]')]
+				gov_page = Page(getSite('eu', 'wikipedia'), eu_gov)
+				if gov_page.exists():
+					print gov, '==>', eu_gov, '==>', wd_gov, '==>', es
+# Gipuzkoako udalerri infotaula
+#cur.execute(u'SELECT gov, eu_page_text, es_page, gov_wd from municipio where eu_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Gipuzkoako udalerri infotaula') != -1:
+		tmpdict = temp2dict(exttemp('gipuzkoako udalerri infotaula', text))
+		if 'alkatea' in tmpdict:
+			if tmpdict['alkatea'].find(u'[[') == 0:
+				eu_gov = tmpdict['alkatea']
+				eu_gov = eu_gov[2:] if eu_gov.find(u']]') == -1 else eu_gov[2:eu_gov.find(u']]')]
+				gov_page = Page(getSite('eu', 'wikipedia'), eu_gov)
+				if gov_page.exists():
+					print gov, '==>', eu_gov, '==>', wd_gov, '==>', es
+# Arabako udalerri infotaula
+#cur.execute(u'SELECT gov, eu_page_text, es_page, gov_wd from municipio where eu_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Arabako udalerri infotaula') != -1:
+		tmpdict = temp2dict(exttemp('arabako udalerri infotaula', text))
+		if 'alkatea' in tmpdict:
+			if tmpdict['alkatea'].find(u'[[') == 0:
+				eu_gov = tmpdict['alkatea']
+				eu_gov = eu_gov[2:] if eu_gov.find(u']]') == -1 else eu_gov[2:eu_gov.find(u']]')]
+				gov_page = Page(getSite('eu', 'wikipedia'), eu_gov)
+				if gov_page.exists():
+					print gov, '==>', eu_gov, '==>', wd_gov, '==>', es
+
+# compare wikidata with ca.wiki
+# Infotaula del municipi balear
+#cur.execute(u'SELECT gov, ca_page_text, es_page, gov_wd from municipio where gov not null and ca_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Infotaula del municipi balear') != -1:
+		tmpdict = temp2dict(exttemp('infotaula del municipi balear', text))
+		if 'batle' in tmpdict:
+			if tmpdict['batle'].find(u'[[') == 0:
+				ca_gov = tmpdict['batle']
+				ca_gov = ca_gov[2:] if ca_gov.find(u']]') == -1 else ca_gov[2:ca_gov.find(u']]')]
+				gov_page = Page(getSite('ca', 'wikipedia'), ca_gov)
+				if gov_page.exists():
+					print gov, '==>', ca_gov, '==>', wd_gov, '==>', es
+# Infotaula del municipi basc
+#cur.execute(u'SELECT gov, ca_page_text, es_page, gov_wd from municipio where gov not null and ca_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Infotaula del municipi basc') != -1:
+		tmpdict = temp2dict(exttemp('infotaula del municipi basc', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ca_gov = tmpdict['alcalde']
+				ca_gov = ca_gov[2:] if ca_gov.find(u']]') == -1 else ca_gov[2:ca_gov.find(u']]')]
+				gov_page = Page(getSite('ca', 'wikipedia'), ca_gov)
+				if gov_page.exists():
+					print gov, '==>', ca_gov, '==>', wd_gov, '==>', es
+# Infotaula del municipi valencià
+#cur.execute(u'SELECT gov, ca_page_text, es_page, gov_wd from municipio where gov not null and ca_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Infotaula del municipi valencià') != -1:
+		tmpdict = temp2dict(exttemp(u'infotaula del municipi valencià', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ca_gov = tmpdict['alcalde']
+				ca_gov = ca_gov[2:] if ca_gov.find(u']]') == -1 else ca_gov[2:ca_gov.find(u']]')]
+				gov_page = Page(getSite('ca', 'wikipedia'), ca_gov)
+				if gov_page.exists():
+					print gov, '==>', ca_gov, '==>', wd_gov, '==>', es
+# Infotaula del municipi aragonès
+#cur.execute(u'SELECT gov, ca_page_text, es_page, gov_wd from municipio where gov not null and ca_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Infotaula del municipi aragonès') != -1:
+		tmpdict = temp2dict(exttemp(u'infotaula del municipi aragonès', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ca_gov = tmpdict['alcalde']
+				ca_gov = ca_gov[2:] if ca_gov.find(u']]') == -1 else ca_gov[2:ca_gov.find(u']]')]
+				gov_page = Page(getSite('ca', 'wikipedia'), ca_gov)
+				if gov_page.exists():
+					print gov, '==>', ca_gov, '==>', wd_gov, '==>', es
+# Infotaula del municipi català
+#cur.execute(u'SELECT gov, ca_page_text, es_page, gov_wd from municipio where gov not null and ca_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Infotaula del municipi català') != -1:
+		tmpdict = temp2dict(exttemp(u'infotaula del municipi català', text))
+		if 'alcalde' in tmpdict:
+			tmpdict['alcalde'] = tmpdict['alcalde'].replace("''", "")
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ca_gov = tmpdict['alcalde']
+				ca_gov = ca_gov[2:] if ca_gov.find(u']]') == -1 else ca_gov[2:ca_gov.find(u']]')]
+				gov_page = Page(getSite('ca', 'wikipedia'), ca_gov)
+				if gov_page.exists() and wd_gov == None:
+					print gov, '==>', ca_gov, '==>', wd_gov, '==>', es
+# Infotaula del municipi espanyol
+cur.execute(u'SELECT gov, ca_page_text, es_page, gov_wd from municipio where gov not null and ca_page_text not null')
+data = cur.fetchall()
+i = 0
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Infotaula del municipi espanyol') != -1:
+		tmpdict = temp2dict(exttemp(u'infotaula del municipi espanyol', text))
+		if 'dirigent1' in tmpdict:
+			tmpdict['dirigent1'] = tmpdict['dirigent1'].replace("''", "")
+			if tmpdict['dirigent1'].find(u'[[') == 0:
+				ca_gov = tmpdict['dirigent1']
+				ca_gov = ca_gov[2:] if ca_gov.find(u']]') == -1 else ca_gov[2:ca_gov.find(u']]')]
+				gov_page = Page(getSite('ca', 'wikipedia'), ca_gov)
+				if gov_page.exists() and wd_gov == None:
+					print gov, '==>', ca_gov, '==>', wd_gov, '==>', es
+print i
+
 con.close()
+

@@ -11,7 +11,7 @@ import sqlite3 as lite
 
 con = lite.connect('municipio.sqlite', isolation_level=None)
 cur = con.cursor()
-cur.execute(u'SELECT es_page_text , es_page from municipio')
+cur.execute(u'SELECT eu_page_text , es_page from municipio where eu_page_text not null and eu_page_text like "%Espainiako udalerri infotaula%"')
 data = cur.fetchall()
 con.close()
 
