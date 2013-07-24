@@ -289,9 +289,8 @@ for item in data:
 				if gov_page.exists() and wd_gov == None:
 					print gov, '==>', ca_gov, '==>', wd_gov, '==>', es
 # Infotaula del municipi espanyol
-cur.execute(u'SELECT gov, ca_page_text, es_page, gov_wd from municipio where gov not null and ca_page_text not null')
-data = cur.fetchall()
-i = 0
+#cur.execute(u'SELECT gov, ca_page_text, es_page, gov_wd from municipio where gov not null and ca_page_text not null')
+data = []#cur.fetchall()
 for item in data:
 	es = item[2]
 	text = item[1]
@@ -307,7 +306,197 @@ for item in data:
 				gov_page = Page(getSite('ca', 'wikipedia'), ca_gov)
 				if gov_page.exists() and wd_gov == None:
 					print gov, '==>', ca_gov, '==>', wd_gov, '==>', es
-print i
+# compare wikidata with gl.wiki
+# Concello galegofalante
+#cur.execute(u'SELECT gov, gl_page_text, es_page, gov_wd from municipio where gov not null and gl_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Concello galegofalante') != -1:
+		tmpdict = temp2dict(exttemp('concello galegofalante', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				gl_gov = tmpdict['alcalde']
+				gl_gov = gl_gov[2:] if gl_gov.find(u']]') == -1 else gl_gov[2:gl_gov.find(u']]')]
+				gov_page = Page(getSite('gl', 'wikipedia'), gl_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', gl_gov, '==>', wd_gov, '==>', es
+# Concello
+#cur.execute(u'SELECT gov, gl_page_text, es_page, gov_wd from municipio where gov not null and gl_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Concello') != -1:
+		tmpdict = temp2dict(exttemp('concello', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				gl_gov = tmpdict['alcalde']
+				gl_gov = gl_gov[2:] if gl_gov.find(u']]') == -1 else gl_gov[2:gl_gov.find(u']]')]
+				gov_page = Page(getSite('gl', 'wikipedia'), gl_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', gl_gov, '==>', wd_gov, '==>', es
+# Cidade
+#cur.execute(u'SELECT gov, gl_page_text, es_page, gov_wd from municipio where gov not null and gl_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Cidade') != -1:
+		tmpdict = temp2dict(exttemp('cidade', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				gl_gov = tmpdict['alcalde']
+				gl_gov = gl_gov[2:] if gl_gov.find(u']]') == -1 else gl_gov[2:gl_gov.find(u']]')]
+				gov_page = Page(getSite('gl', 'wikipedia'), gl_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', gl_gov, '==>', wd_gov, '==>', es
+# compare wikidata with an.wiki
+# Municipio Aragón
+#cur.execute(u'SELECT gov, an_page_text, es_page, gov_wd from municipio where gov not null and an_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Municipio Aragón') != -1:
+		tmpdict = temp2dict(exttemp(u'municipio aragón', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				an_gov = tmpdict['alcalde']
+				an_gov = an_gov[2:] if an_gov.find(u']]') == -1 else an_gov[2:an_gov.find(u']]')]
+				gov_page = Page(getSite('an', 'wikipedia'), an_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', an_gov, '==>', wd_gov, '==>', es
+# Localidat Espanya
+#cur.execute(u'SELECT gov, an_page_text, es_page, gov_wd from municipio where gov not null and an_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Localidat Espanya') != -1:
+		tmpdict = temp2dict(exttemp(u'localidat espanya', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				an_gov = tmpdict['alcalde']
+				an_gov = an_gov[2:] if an_gov.find(u']]') == -1 else an_gov[2:an_gov.find(u']]')]
+				gov_page = Page(getSite('an', 'wikipedia'), an_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', an_gov, '==>', wd_gov, '==>', es
+
+# compare wikidata with ast.wiki
+# Infobox conceyu
+#cur.execute(u'SELECT gov, ast_page_text, es_page, gov_wd from municipio where gov not null and ast_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Infobox conceyu') != -1:
+		tmpdict = temp2dict(exttemp(u'infobox conceyu', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ast_gov = tmpdict['alcalde']
+				ast_gov = ast_gov[2:] if ast_gov.find(u']]') == -1 else ast_gov[2:ast_gov.find(u']]')]
+				gov_page = Page(getSite('ast', 'wikipedia'), ast_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', ast_gov, '==>', wd_gov, '==>', es
+# Municipios Soria
+#cur.execute(u'SELECT gov, ast_page_text, es_page, gov_wd from municipio where gov not null and ast_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Municipios Soria') != -1:
+		tmpdict = temp2dict(exttemp(u'municipios soria', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ast_gov = tmpdict['alcalde']
+				ast_gov = ast_gov[2:] if ast_gov.find(u']]') == -1 else ast_gov[2:ast_gov.find(u']]')]
+				gov_page = Page(getSite('ast', 'wikipedia'), ast_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', ast_gov, '==>', wd_gov, '==>', es
+# Ficha conceyu asturianu
+#cur.execute(u'SELECT gov, ast_page_text, es_page, gov_wd from municipio where gov not null and ast_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Ficha conceyu asturianu') != -1:
+		tmpdict = temp2dict(exttemp(u'ficha conceyu asturianu', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ast_gov = tmpdict['alcalde']
+				ast_gov = ast_gov[2:] if ast_gov.find(u']]') == -1 else ast_gov[2:ast_gov.find(u']]')]
+				gov_page = Page(getSite('ast', 'wikipedia'), ast_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', ast_gov, '==>', wd_gov, '==>', es
+# Conceyu
+#cur.execute(u'SELECT gov, ast_page_text, es_page, gov_wd from municipio where gov not null and ast_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Conceyu') != -1:
+		tmpdict = temp2dict(exttemp(u'conceyu', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ast_gov = tmpdict['alcalde']
+				ast_gov = ast_gov[2:] if ast_gov.find(u']]') == -1 else ast_gov[2:ast_gov.find(u']]')]
+				gov_page = Page(getSite('ast', 'wikipedia'), ast_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', ast_gov, '==>', wd_gov, '==>', es
+# Tablaciudaes
+#cur.execute(u'SELECT gov, ast_page_text, es_page, gov_wd from municipio where gov not null and ast_page_text not null')
+data = []#cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Tablaciudaes') != -1:
+		tmpdict = temp2dict(exttemp(u'tablaciudaes', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ast_gov = tmpdict['alcalde']
+				ast_gov = ast_gov[2:] if ast_gov.find(u']]') == -1 else ast_gov[2:ast_gov.find(u']]')]
+				gov_page = Page(getSite('ast', 'wikipedia'), ast_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', ast_gov, '==>', wd_gov, '==>', es
+# Municipios Guipúzcoa
+cur.execute(u'SELECT gov, ast_page_text, es_page, gov_wd from municipio where gov not null and ast_page_text not null')
+data = cur.fetchall()
+for item in data:
+	es = item[2]
+	text = item[1]
+	gov = item[0]
+	wd_gov = item[3]
+	if text.find(u'Municipios Guipúzcoa') != -1:
+		tmpdict = temp2dict(exttemp(u' municipios guipúzcoa', text))
+		if 'alcalde' in tmpdict:
+			if tmpdict['alcalde'].find(u'[[') == 0:
+				ast_gov = tmpdict['alcalde']
+				ast_gov = ast_gov[2:] if ast_gov.find(u']]') == -1 else ast_gov[2:ast_gov.find(u']]')]
+				gov_page = Page(getSite('ast', 'wikipedia'), ast_gov)
+				if wd_gov == None and gov_page.exists():
+					print gov, '==>', ast_gov, '==>', wd_gov, '==>', es
 
 con.close()
 
