@@ -134,7 +134,7 @@ for row in data[4080:]:
 		if cl_ct == 1:
 			for claim in data['claims']:
 				if claim['m'][1] == 373:
-                        		commons = claim['m'][3]
+                        		commons = u'Category:'+claim['m'][3]
 		else:
 			print 'commons '+ str(cl_ct) + ' '+ wikidata
 			break
