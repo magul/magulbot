@@ -90,17 +90,17 @@ for province in provinces:
 # get data from sqlite
 con = lite.connect('municipio.sqlite', isolation_level=None)
 cur = con.cursor()
-cur.execute(u'SELECT population, area, commons, image, www, flag, coa, lon, lat, wikidata, other_language, default_sort, other_name, spanish_name, current_plpage, pl_province, db_offset FROM municipio')
+cur.execute(u'SELECT population, area, commons, image, www, flag, coa, lon, lat, wikidata, other_language, default_sort, other_name, spanish_name, current_plpage, pl_province, db_offset, gov FROM municipio')
 data = cur.fetchall()
 #data = []
 con.close()
 
 # limit edit
-max_edits = 49
+max_edits = 50
 edit_ct = 0
 
 # for every row in data
-for row in data[4030:]:
+for row in data[4080:]:
 # extract data from tuple
 	population = row[0]
 	area = row[1]
@@ -119,18 +119,76 @@ for row in data[4030:]:
 	pl_page = row[14]
 	pl_province = row[15]
 	db_offset = row[16]
+	gov = row[17]
+
+# get again data directly from wikidata
+	repo = plwiki.data_repository()
+	data = DataPage(repo, wikidata)
+	data = data.get()
+# commons
+	if commons != None and u'{{' in commons:
+		cl_ct = 0
+		for claim in data['claims']:
+			if claim['m'][1] == 373:
+				cl_ct += 1
+		if cl_ct == 1:
+			for claim in data['claims']:
+				if claim['m'][1] == 373:
+                        		commons = claim['m'][3]
+		else:
+			print 'commons '+ str(cl_ct) + ' '+ wikidata
+			break
+# image
+	if image != None and u'{{' in image:
+		cl_ct = 0
+		for claim in data['claims']:
+			if claim['m'][1] == 18:
+				cl_ct += 1
+		if cl_ct == 1:
+			for claim in data['claims']:
+				if claim['m'][1] == 18:
+					image = claim['m'][3]
+		else:
+			print 'image '+ str(cl_ct) + ' '+ wikidata
+			break
+# flag
+	if flag != None and u'{{' in flag:
+		cl_ct = 0
+		for claim in data['claims']:
+			if claim['m'][1] == 41:
+				cl_ct += 1
+		if cl_ct == 1:
+			for claim in data['claims']:
+				if claim['m'][1] == 41:
+					flag = claim['m'][3]
+		else:
+			print 'flag '+ str(cl_ct) + ' '+ wikidata
+			break
+# coa
+	if coa != None and u'{{' in coa:
+		cl_ct = 0
+		for claim in data['claims']:
+			if claim['m'][1] == 94:
+				cl_ct += 1
+		if cl_ct == 1:
+			for claim in data['claims']:
+				if claim['m'][1] == 94:
+					coa = claim['m'][3]
+		else:
+			print 'coa '+ str(cl_ct) + ' '+ wikidata
+			break
 
 # check if page already exists
 	pl_page = Page(plwiki, pl_page)
 	if not pl_page.exists():
 # create template - infobox
-		pl_page_text  = u'{{Miejscowość WIKIDATA infobox\n'
+		pl_page_text  = u'{{Miejscowość infobox\n'
 		pl_page_text += u' |nazwa                        = ' + spanish_name + u'\n'
 		pl_page_text += u' |nazwa oryginalna             =\n'
-		pl_page_text += u' |zdjęcie                      =\n'
+		pl_page_text += u' |zdjęcie                      =' + (u' ' + image + u'\n' if image != None else u'\n')
 		pl_page_text += u' |opis zdjęcia                 =\n'
-		pl_page_text += u' |herb                         =\n'
-		pl_page_text += u' |flaga                        =\n'
+		pl_page_text += u' |herb                         =' + (u' ' + coa + u'\n' if coa != None else u'\n')
+		pl_page_text += u' |flaga                        =' + (u' ' + flag + u'\n' if flag != None else u'\n') 
 		pl_page_text += u' |dopełniacz nazwy             = ' + spanish_name + u'\n'
 		pl_page_text += u' |państwo                      = Hiszpania\n'
 		pl_page_text += u' |wariant flagi                =\n'
@@ -140,7 +198,7 @@ for row in data[4030:]:
 		pl_page_text += u' |4. jednostka administracyjna =\n'
 		pl_page_text += u' |5. jednostka administracyjna =\n'
 		pl_page_text += u' |stanowisko zarządzającego    = Alkad\n'
-		pl_page_text += u' |zarządzający                 =\n'
+		pl_page_text += u' |zarządzający                 =' + (u' ' + gov if gov != None else u'') + '\n'
 		pl_page_text += u' |powierzchnia                 = ' + str(area).replace('.',',') + u'{{r|ssweb}}\n'
 		pl_page_text += u' |wysokość                     =\n'
 		pl_page_text += u' |rok                          = 2011\n'

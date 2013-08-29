@@ -8,10 +8,15 @@
 
 import pwb
 from pywikibot import *
+import sqlite3 as lite
+
 
 s = Site('wikidata', 'wikidata')
 r = s.data_repository()
 p = Page(s, u'Wikidata:Requests for permissions/Bot/MagulBot 4').get()
+
+con = lite.connect('municipio.sqlite', isolation_level=None)
+cur = con.cursor()
 
 links = []
 p = p[p.find(u"Q11916413"):]
@@ -26,30 +31,13 @@ while i != len(links):
 	duplicate = ItemPage(r, links[i])
 	origin.get()
 	duplicate.get()
-	news = {}
-	olds = {}
-	for label in duplicate.labels:
-		if not label in origin.labels:
-			news[label]=duplicate.labels[label]
-	if len(news) > 0:
-		origin.editLabels(news)
-	news = {}
-	olds = {}
-	for aka in duplicate.aliases:
-		if not aka in origin.aliases:
-			news[aka]=duplicate.aliases[aka]
-	if len(news) > 0:
-		origin.editAliases(news)
-#	print duplicate.sitelinks
-	mun_wd = None
-	for j in duplicate.backlinks():
-		if j.title()[0] == 'Q':
-			mun_wd = ItemPage(r, j.title())
-	mun_wd.get()
-	print mun_wd.title()
-	mun_wd.removeClaims(mun_wd.claims['p6'])
 
-	mun_wd.addClaim(Claim(r, 'p6', ).setTarget(origin))
-
-#	sitelinks = dict(origin.sitelinks.items() + duplicate.sitelinks.items())
+	cur.execute("SELECT wikidata from municipio where gov='"+duplicate.labels['en'].replace("'", "''")+"'")
+	data = cur.fetchone()
+	mun_wd = ItemPage(r, data[0])
+#	print duplicate.title(), '==>', mun_wd
+#	c = Claim(r, 'p6', origin.title())
+#	c.setTarget(origin)
+#	mun_wd.addClaim(c)
+	print duplicate.title(), '|'
 	i += 2
