@@ -96,11 +96,11 @@ data = cur.fetchall()
 con.close()
 
 # limit edit
-max_edits = 50
+max_edits = 5000
 edit_ct = 0
 
 # for every row in data
-for row in data[4080:]:
+for row in data[6840:]:
 # extract data from tuple
 	population = row[0]
 	area = row[1]
@@ -125,6 +125,7 @@ for row in data[4080:]:
 	repo = plwiki.data_repository()
 	data = DataPage(repo, wikidata)
 	data = data.get()
+	print wikidata
 # commons
 	if commons != None and u'{{' in commons:
 		cl_ct = 0
@@ -224,6 +225,9 @@ for row in data[4080:]:
 		if other_name != None:
 			pl_page_text += u'([[język '+ (u'baskijski|baskijski' if other_language == u'b' else u'walencki|walencki') + u"]]: ''" + other_name + "'') " 
 		pl_page_text += u'– [[gmina]] w [[Hiszpania|Hiszpanii]], w prowincji [[' + prov[pl_province] + (u'|' + pl_province + u']], ' if pl_province != prov[pl_province] else u']], ')
+		print pl_province
+		print auto_com[pl_province]
+		print auto_com_loc[auto_com[pl_province]]
 		if auto_com_loc[auto_com[pl_province]].find(u'wspólnocie') == 0:
 			pl_page_text += u'we [[' + auto_com[pl_province] + u'|' + auto_com_loc[auto_com[pl_province]] + u']], '
 		else:
