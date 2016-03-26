@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'generic',
     'countries',
     'pl_wojewodztwo',
+    'pl_powiat',
 )
 
 MIDDLEWARE_CLASSES = (
