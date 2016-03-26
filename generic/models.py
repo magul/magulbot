@@ -9,3 +9,7 @@ class WikiDataEntity(models.Model):
         abstract = True
 
     wikidata_id = models.CharField(max_length=15)
+    label = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.label
