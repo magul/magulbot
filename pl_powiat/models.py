@@ -9,4 +9,4 @@ from generic import models as generic_models
 class Powiat(generic_models.WikiDataEntity):
 
     wojewodztwo = models.ForeignKey(wojewodztwo_models.Wojewodztwo)
-    miato_na_prawach_powiatu = models.BooleanField()
+    miasto_na_prawach_powiatu = models.BooleanField()
