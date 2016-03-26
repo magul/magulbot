@@ -37,6 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'generic',
+    'countries',
+    'pl_wojewodztwo',
 )
 
 MIDDLEWARE_CLASSES = (
