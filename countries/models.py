@@ -3,6 +3,6 @@
 from generic import models
 
 
-class Poland(models.WikiDataEntity):
+class Poland(models.AbstractWikiDataEntity):
 
     pass

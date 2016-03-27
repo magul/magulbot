@@ -5,10 +5,19 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 
-class WikiDataEntity(models.Model):
+class AbstractWikiDataEntity(models.Model):
 
     class Meta:
         abstract = True
+
+    wikidata_id_abs = models.CharField(max_length=15)
+    label_abs = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.label_abs
+
+
+class WikiDataEntity(models.Model):
 
     wikidata_id = models.CharField(max_length=15)
     label = models.CharField(max_length=150)
