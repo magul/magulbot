@@ -3,5 +3,14 @@ magulbot-web:
   entrypoint: python manage.py runserver 0.0.0.0:8000
   ports:
     - 8000:8000
+  links:
+    - magulbot-postgres:postgres
   volumes:
     - ./magulbot:/magulbot
+
+magulbot-postgres:
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: magulbot
+    POSTGRES_USER: magulbot
+    POSTGRES_DB: magulbot

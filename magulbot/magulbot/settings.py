@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rawpages',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +77,12 @@ WSGI_APPLICATION = 'magulbot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'magulbot',
+        'USER': 'magulbot',
+        'PASSWORD': 'magulbot',
+        'HOST': 'postgres',
+        'PORT': '5432',
     }
 }
 
@@ -118,3 +124,35 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+MAGULBOT_COUNTRIES = [
+    'Q40',   # Austria
+    'Q31',   # Belgium
+    'Q219',  # Bulgaria
+    'Q224',  # Croatia
+    'Q229',  # Cyprus
+    'Q213',  # Czech Republic
+    'Q35',   # Denmark
+    'Q191',  # Estonia
+    'Q33',   # Finland
+    'Q142',  # France
+    'Q183',  # Germany
+    'Q41',   # Greece
+    'Q28',   # Hungary
+    'Q27',   # Ireland
+    'Q38',   # Italy
+    'Q211',  # Latvia
+    'Q37',   # Lithuania
+    'Q32',   # Luxembourg
+    'Q233',  # Malta
+    'Q55',   # Netherlands
+    'Q36',   # Poland
+    'Q45',   # Portugal
+    'Q218',  # Romania
+    'Q214',  # Slovakia
+    'Q215',  # Slovenia
+    'Q29',   # Spain
+    'Q34',   # Sweden
+    'Q145',  # United Kingdom
+]
