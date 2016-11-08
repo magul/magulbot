@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_celery_beat',
+
     'rawpages',
 ]
 
@@ -124,6 +126,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+CELERY_BROKER_URL = 'amqp://admin:admin@rabbitmq:5672/'
+
+CELERY_BEAT_SCHEDULE = {
+}
 
 
 MAGULBOT_COUNTRIES = [

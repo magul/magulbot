@@ -5,6 +5,25 @@ magulbot-web:
     - 8000:8000
   links:
     - magulbot-postgres:postgres
+    - magulbot-rabbitmq:rabbitmq
+  volumes:
+    - ./magulbot:/magulbot
+
+magulbot-celery:
+  image: magul/magulbot
+  entrypoint: celery -A magulbot worker -l info
+  links:
+    - magulbot-postgres:postgres
+    - magulbot-rabbitmq:rabbitmq
+  volumes:
+    - ./magulbot:/magulbot
+
+magulbot-beat:
+  image: magul/magulbot
+  entrypoint: celery -A magulbot beat -S django --pidfile=/tmp/celerybeat.pid
+  links:
+    - magulbot-postgres:postgres
+    - magulbot-rabbitmq:rabbitmq
   volumes:
     - ./magulbot:/magulbot
 
@@ -14,3 +33,9 @@ magulbot-postgres:
     POSTGRES_PASSWORD: magulbot
     POSTGRES_USER: magulbot
     POSTGRES_DB: magulbot
+
+magulbot-rabbitmq:
+  image: rabbitmq
+  environment:
+    RABBITMQ_DEFAULT_USER: admin
+    RABBITMQ_DEFAULT_PASS: admin

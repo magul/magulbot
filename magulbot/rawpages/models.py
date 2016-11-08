@@ -9,3 +9,4 @@ class RawPage(models.Model):
     name = models.CharField(max_length=1000)
     new_id = models.CharField(max_length=15)
     rev_id = models.CharField(max_length=15)
+    last_sync = models.DateTimeField()
